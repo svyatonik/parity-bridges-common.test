@@ -113,7 +113,22 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-charlie "./bin/bridge-node\
 # give nodes some time to startup
 sleep 20
 
+# common variables
+ETH_HOST=127.0.0.1
+RELAY_BINARY_PATH=./bin/ethereum-poa-relay
+RUST_LOG=bridge=trace
+export ETH_HOST RELAY_BINARY_PATH RUST_LOG
+
 # start eth2sub headers relay
-RUST_LOG=bridge=trace ./run-with-log.sh relay-eth-to-sub "./bin/ethereum-poa-relay\
+./run-with-log.sh relay-eth-to-sub "./bin/ethereum-poa-relay\
 	eth-to-sub\
 	--prometheus-port=9618"&
+
+# start generating exchange transactions on PoA nodes
+./run-with-log.sh \
+	poa-exchange-tx-generator\
+	$BRIDGES_REPO_PATH/deployments/rialto/bridge-config/poa-exchange-tx-generator-entrypoint.sh&
+
+# start relaying exchange transactions from PoA to Susbtrate
+./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
+	eth-exchange-sub"&
