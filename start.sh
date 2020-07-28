@@ -131,4 +131,33 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 
 # start relaying exchange transactions from PoA to Susbtrate
 ./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
-	eth-exchange-sub"&
+	eth-exchange-sub\
+	--prometheus-port=9619"&
+
+# copy files requires for dashboard
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.json data
+sed -i 's/relay-eth2sub:9616/127.0.0.1:9618/g' data/prometheus.yml
+sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9619/g' data/prometheus.yml
+sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/grafana-datasource.yaml
+
+# run prometheus (http://127.0.0.1:9090/)
+docker container rm relay-prometheus | true
+docker run \
+	--name=relay-prometheus \
+	--network=host \
+	-v `realpath data/prometheus.yml`:/etc/prometheus/prometheus.yml \
+	prom/prometheus \
+	--config.file /etc/prometheus/prometheus.yml&
+
+# run grafana (http://127.0.0.1:3000/ + admin/admin)
+docker container rm relay-grafana | true
+docker run \
+	--name=relay-grafana \
+	--network=host \
+	-v `realpath data/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
+	-v `realpath data/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
+	-v `realpath data/grafana-dashboard.json`:/etc/grafana/provisioning/dashboards/grafana-dashboard.json \
+	grafana/grafana&
