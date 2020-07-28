@@ -135,20 +135,23 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 	--prometheus-port=9619"&
 
 # copy files requires for dashboard
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.json data
-sed -i 's/relay-eth2sub:9616/127.0.0.1:9618/g' data/prometheus.yml
-sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9619/g' data/prometheus.yml
-sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/grafana-datasource.yaml
+rm -rf data/dashboards
+mkdir -p data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/dashboards
+sed -i 's/relay-eth2sub:9616/127.0.0.1:9618/g' data/dashboards/prometheus.yml
+sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9619/g' data/dashboards/prometheus.yml
+sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/dashboards/grafana-datasource.yaml
 
 # run prometheus (http://127.0.0.1:9090/)
 docker container rm relay-prometheus | true
 docker run \
 	--name=relay-prometheus \
 	--network=host \
-	-v `realpath data/prometheus.yml`:/etc/prometheus/prometheus.yml \
+	-v `realpath data/dashboards/prometheus.yml`:/etc/prometheus/prometheus.yml \
 	prom/prometheus \
 	--config.file /etc/prometheus/prometheus.yml&
 
@@ -157,7 +160,8 @@ docker container rm relay-grafana | true
 docker run \
 	--name=relay-grafana \
 	--network=host \
-	-v `realpath data/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
-	-v `realpath data/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
-	-v `realpath data/grafana-dashboard.json`:/etc/grafana/provisioning/dashboards/grafana-dashboard.json \
+	-v `realpath data/dashboards/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
+	-v `realpath data/dashboards/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
+	-v `realpath data/dashboards/relay-eth2sub-exchange-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json \
+	-v `realpath data/dashboards/relay-eth2sub-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json \
 	grafana/grafana&
