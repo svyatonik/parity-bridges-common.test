@@ -3,6 +3,10 @@
 . ./build-node.sh
 . ./build-relay.sh
 
+###############################################################################
+### PoA chain startup #########################################################
+###############################################################################
+
 # remove PoA databases
 rm -rf data/poa-arthur.db
 rm -rf data/poa-bertha.db
@@ -62,10 +66,16 @@ echo "enode://943525f415b9482f1c49bd39eb979e4e2b406f4137450b0553bffa5cba2928e25f
 	--reserved-peers=data/reserved\
 	--unsafe-expose"&
 
+###############################################################################
+### Rialto (Substrate) chain startup ##########################################
+###############################################################################
+
 # remove Rialto databases
 rm -rf data/rialto-alice.db
 rm -rf data/rialto-bob.db
 rm -rf data/rialto-charlie.db
+rm -rf data/rialto-dave.db
+rm -rf data/rialto-eve.db
 
 # start Rialto nodes
 RUST_LOG=runtime=trace ./run-with-log.sh rialto-alice "./bin/bridge-node\
@@ -109,9 +119,41 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-charlie "./bin/bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
+RUST_LOG=runtime=trace ./run-with-log.sh rialto-dave "./bin/bridge-node\
+	--dave\
+	--base-path=data/rialto-dave.db\
+	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\
+	--port=30336\
+	--prometheus-port=9618\
+	--rpc-port=9936\
+	--ws-port=9947\
+	--execution=Native\
+	--chain=local\
+	--rpc-cors=all\
+	--unsafe-rpc-external\
+	--unsafe-ws-external"&
+RUST_LOG=runtime=trace ./run-with-log.sh rialto-eve "./bin/bridge-node\
+	--eve\
+	--base-path=data/rialto-eve.db\
+	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\
+	--port=30337\
+	--prometheus-port=9619\
+	--rpc-port=9937\
+	--ws-port=9948\
+	--execution=Native\
+	--chain=local\
+	--rpc-cors=all\
+	--unsafe-rpc-external\
+	--unsafe-ws-external"&
 
-# give nodes some time to startup
+###############################################################################
+### Give nodes some time to startup ###########################################
+###############################################################################
 sleep 20
+
+###############################################################################
+### Starting PoA -> Rialto relays (eth transactions are signed by Bertha)   ###
+###############################################################################
 
 # common variables
 ETH_HOST=127.0.0.1
@@ -122,7 +164,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # start eth2sub headers relay
 ./run-with-log.sh relay-eth-to-sub "./bin/ethereum-poa-relay\
 	eth-to-sub\
-	--prometheus-port=9618"&
+	--prometheus-port=9650"&
 
 # start generating exchange transactions on PoA nodes
 ./run-with-log.sh \
@@ -132,7 +174,32 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # start relaying exchange transactions from PoA to Susbtrate
 ./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
 	eth-exchange-sub\
-	--prometheus-port=9619"&
+	--prometheus-port=9651"&
+
+###############################################################################
+### Starting Rialto -> PoA relays (eth transactions are signed by Artur)    ###
+###############################################################################
+
+# deploy bridge contract on PoA chain
+./run-with-log.sh relay-eth-deploy-contract "./bin/ethereum-poa-relay\
+	eth-deploy-contract\
+	--eth-chain-id 105\
+	--eth-signer 0399dbd15cf6ee8250895a1f3873eb1e10e23ca18e8ed0726c63c4aea356e87d"
+
+# wait until block with transaction is mined
+sleep 20
+
+# start sub2eth headers relay
+./run-with-log.sh relay-sub-to-eth "./bin/ethereum-poa-relay\
+	sub-to-eth\
+	--eth-chain-id 105\
+	--eth-contract c9a61fb29e971d1dabfd98657969882ef5d0beee\
+	--eth-signer 0399dbd15cf6ee8250895a1f3873eb1e10e23ca18e8ed0726c63c4aea356e87d\
+	--prometheus-port=9653"&
+
+###############################################################################
+### Starting Prometheus + Grafana #############################################
+###############################################################################
 
 # copy files requires for dashboard
 rm -rf data/dashboards
@@ -142,8 +209,8 @@ yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisionin
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/dashboards
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/dashboards
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/dashboards
-sed -i 's/relay-eth2sub:9616/127.0.0.1:9618/g' data/dashboards/prometheus.yml
-sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9619/g' data/dashboards/prometheus.yml
+sed -i 's/relay-eth2sub:9616/127.0.0.1:9650/g' data/dashboards/prometheus.yml
+sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9651/g' data/dashboards/prometheus.yml
 sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/dashboards/grafana-datasource.yaml
 
 # run prometheus (http://127.0.0.1:9090/)
