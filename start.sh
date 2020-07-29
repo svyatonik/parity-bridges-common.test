@@ -209,8 +209,10 @@ yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisionin
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/dashboards
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/dashboards
 yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json data/dashboards
 sed -i 's/relay-eth2sub:9616/127.0.0.1:9650/g' data/dashboards/prometheus.yml
 sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9651/g' data/dashboards/prometheus.yml
+sed -i 's/relay-sub2eth:9616/127.0.0.1:9653/g' data/dashboards/prometheus.yml
 sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/dashboards/grafana-datasource.yaml
 
 # run prometheus (http://127.0.0.1:9090/)
@@ -231,4 +233,5 @@ docker run \
 	-v `realpath data/dashboards/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
 	-v `realpath data/dashboards/relay-eth2sub-exchange-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json \
 	-v `realpath data/dashboards/relay-eth2sub-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json \
+	-v `realpath data/dashboards/relay-sub2eth-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json \
 	grafana/grafana&
