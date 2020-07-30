@@ -26,7 +26,7 @@ echo "enode://710de70733e88a24032e53054985f7239e37351f5f3335a468a1a78a3026e9f090
 echo "enode://943525f415b9482f1c49bd39eb979e4e2b406f4137450b0553bffa5cba2928e25ff89ef70f7325aad8a75dbb5955eaecc1aee7ac55d66bcaaa07c8ea58adb23a@127.0.0.1:30305" >>data/reserved
 
 # start PoA nodes
-./run-with-log.sh poa-arthur "./bin/parity\
+RUST_LOG=bridge-builtin=trace ./run-with-log.sh poa-arthur "./bin/parity\
 	--base-path=data/poa-arthur.db\
 	--engine-signer=0x005e714f896a8b7cede9d38688c1a81de72a58e4\
 	--node-key=arthur\
@@ -39,7 +39,7 @@ echo "enode://943525f415b9482f1c49bd39eb979e4e2b406f4137450b0553bffa5cba2928e25f
 	--password=data/password\
 	--reserved-peers=data/reserved\
 	--unsafe-expose"&
-./run-with-log.sh poa-bertha "./bin/parity\
+RUST_LOG=bridge-builtin=trace ./run-with-log.sh poa-bertha "./bin/parity\
 	--base-path=data/poa-bertha.db\
 	--engine-signer=0x007594304039c2937a12220338aab821d819f5a4\
 	--node-key=bertha\
@@ -52,7 +52,7 @@ echo "enode://943525f415b9482f1c49bd39eb979e4e2b406f4137450b0553bffa5cba2928e25f
 	--password=data/password\
 	--reserved-peers=data/reserved\
 	--unsafe-expose"&
-./run-with-log.sh poa-carlos "./bin/parity\
+RUST_LOG=bridge-builtin=trace ./run-with-log.sh poa-carlos "./bin/parity\
 	--base-path=data/poa-carlos.db\
 	--engine-signer=0x004e7a39907f090e19b0b80a277e77b72b22e269\
 	--node-key=carlos\
