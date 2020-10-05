@@ -92,7 +92,7 @@ sleep 20
 
 ###############################################################################
 ### Starting Millau -> Rialto relays (Rialto transactions are               ###
-### signed by Charlie)                                                      ###
+### signed by Bob)                                                          ###
 ###############################################################################
 
 # common variables
