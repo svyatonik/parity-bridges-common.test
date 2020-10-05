@@ -1,7 +1,7 @@
 #!/bin/bash
 . ./prelude.sh
 . ./build-rialto-node.sh
-. ./build-relay.sh
+. ./build-ethereum-relay.sh
 
 ###############################################################################
 ### PoA chain startup #########################################################
@@ -158,7 +158,7 @@ sleep 20
 # common variables
 ETH_HOST=127.0.0.1
 RELAY_BINARY_PATH=./bin/ethereum-poa-relay
-RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=trace
+RUST_LOG=bridge=trace,bridge-metrics=info,runtime=trace
 export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 
 # start eth2sub headers relay
