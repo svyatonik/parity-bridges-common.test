@@ -74,7 +74,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-dave "./bin/millau-bridge-node\
 RUST_LOG=runtime=trace ./run-with-log.sh millau-eve "./bin/millau-bridge-node\
 	--eve\
 	--base-path=data/millau-eve.db\
-	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
+	--bootnodes=/ip4/127.0.0.1/tcp/40333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
 	--port=40337\
 	--prometheus-port=10619\
 	--rpc-port=10937\
@@ -89,3 +89,26 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-eve "./bin/millau-bridge-node\
 ### Give nodes some time to startup ###########################################
 ###############################################################################
 sleep 20
+
+###############################################################################
+### Starting Millau -> Rialto relays (Rialto transactions are               ###
+### signed by Charlie)                                                      ###
+###############################################################################
+
+# common variables
+MILLAU_HOST=127.0.0.1
+MILLAU_PORT=10933
+RIALTO_HOST=127.0.0.1
+RIALTO_PORT=9933
+RELAY_BINARY_PATH=./bin/substrate-relay
+RUST_LOG=bridge=trace,runtime=trace
+export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
+
+# start millau-headers-to-rialto relay
+./run-with-log.sh relay-millau-to-rialto "./bin/substrate-relay\
+	millau-headers-to-rialto\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--rialto-signer=//Bob"&
