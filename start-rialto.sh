@@ -164,6 +164,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # start eth2sub headers relay
 ./run-with-log.sh relay-eth-to-sub "./bin/ethereum-poa-relay\
 	eth-to-sub\
+	--sub-port=9944\
 	--prometheus-port=9650"&
 
 # start generating exchange transactions on PoA nodes
@@ -174,6 +175,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # start relaying exchange transactions from PoA to Susbtrate
 ./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
 	eth-exchange-sub\
+	--sub-port=9944\
 	--prometheus-port=9651"&
 
 ###############################################################################
@@ -183,6 +185,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # deploy bridge contract on PoA chain
 ./run-with-log.sh relay-eth-deploy-contract "./bin/ethereum-poa-relay\
 	eth-deploy-contract\
+	--sub-port=9944\
 	--eth-chain-id 105\
 	--eth-signer 0399dbd15cf6ee8250895a1f3873eb1e10e23ca18e8ed0726c63c4aea356e87d"
 
@@ -192,6 +195,7 @@ sleep 20
 # start sub2eth headers relay
 ./run-with-log.sh relay-sub-to-eth "./bin/ethereum-poa-relay\
 	sub-to-eth\
+	--sub-port=9944\
 	--eth-chain-id 105\
 	--eth-contract c9a61fb29e971d1dabfd98657969882ef5d0beee\
 	--eth-signer 0399dbd15cf6ee8250895a1f3873eb1e10e23ca18e8ed0726c63c4aea356e87d\
