@@ -206,36 +206,36 @@ sleep 20
 ###############################################################################
 
 # copy files requires for dashboard
-rm -rf data/dashboards
-mkdir -p data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json data/dashboards
-sed -i 's/relay-eth2sub:9616/127.0.0.1:9650/g' data/dashboards/prometheus.yml
-sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9651/g' data/dashboards/prometheus.yml
-sed -i 's/relay-sub2eth:9616/127.0.0.1:9653/g' data/dashboards/prometheus.yml
-sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/dashboards/grafana-datasource.yaml
+rm -rf data/rialto-dashboards
+mkdir -p data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json data/rialto-dashboards
+sed -i 's/relay-eth2sub:9616/127.0.0.1:9650/g' data/rialto-dashboards/prometheus.yml
+sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9651/g' data/rialto-dashboards/prometheus.yml
+sed -i 's/relay-sub2eth:9616/127.0.0.1:9653/g' data/rialto-dashboards/prometheus.yml
+sed -i 's/prometheus-metrics:9090/127.0.0.1:9090/g' data/rialto-dashboards/grafana-datasource.yaml
 
 # run prometheus (http://127.0.0.1:9090/)
-docker container rm relay-prometheus | true
+docker container rm rialto-relay-prometheus | true
 docker run \
-	--name=relay-prometheus \
+	--name=rialto-relay-prometheus \
 	--network=host \
-	-v `realpath data/dashboards/prometheus.yml`:/etc/prometheus/prometheus.yml \
+	-v `realpath data/rialto-dashboards/prometheus.yml`:/etc/prometheus/prometheus.yml \
 	prom/prometheus \
 	--config.file /etc/prometheus/prometheus.yml&
 
 # run grafana (http://127.0.0.1:3000/ + admin/admin)
-docker container rm relay-grafana | true
+docker container rm rialto-relay-grafana | true
 docker run \
-	--name=relay-grafana \
+	--name=rialto-relay-grafana \
 	--network=host \
-	-v `realpath data/dashboards/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
-	-v `realpath data/dashboards/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
-	-v `realpath data/dashboards/relay-eth2sub-exchange-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json \
-	-v `realpath data/dashboards/relay-eth2sub-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json \
-	-v `realpath data/dashboards/relay-sub2eth-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json \
+	-v `realpath data/rialto-dashboards/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
+	-v `realpath data/rialto-dashboards/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
+	-v `realpath data/rialto-dashboards/relay-eth2sub-exchange-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json \
+	-v `realpath data/rialto-dashboards/relay-eth2sub-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json \
+	-v `realpath data/rialto-dashboards/relay-sub2eth-sync-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json \
 	grafana/grafana&
