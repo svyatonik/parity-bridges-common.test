@@ -91,8 +91,16 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-eve "./bin/millau-bridge-node\
 sleep 20
 
 ###############################################################################
-### Starting Millau -> Rialto relays (Rialto transactions are               ###
-### signed by Bob)                                                          ###
+### Start generating messages on Millau <-> Rialto lanes ######################
+###############################################################################
+
+# start generating Millau -> Rialto messages
+./run-with-log.sh \
+	millau-to-rialto-messages-generator\
+	./millau-messages-generator.sh&
+
+###############################################################################
+### Starting Millau -> Rialto relays ##########################################
 ###############################################################################
 
 # common variables
@@ -111,4 +119,17 @@ export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LO
 	--millau-port=$MILLAU_PORT\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
-	--rialto-signer=//Bob"&
+	--rialto-signer=//Bob\
+	--prometheus-port=9700"&
+
+# start millau-messages-to-rialto relay
+./run-with-log.sh relay-millau-to-rialto-messages "./bin/substrate-relay\
+	millau-messages-to-rialto\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//Alice\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--rialto-signer=//Charlie\
+	--prometheus-port=9701\
+	--lane=00000000"&
