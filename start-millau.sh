@@ -122,6 +122,16 @@ export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LO
 	--rialto-signer=//Bob\
 	--prometheus-port=9700"&
 
+# start rialto-headers-to-millau relay
+./run-with-log.sh relay-millau-to-rialto "./bin/substrate-relay\
+	rialto-headers-to-millau\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//Bob\
+	--prometheus-port=9700"&
+
 # start millau-messages-to-rialto relay
 ./run-with-log.sh relay-millau-to-rialto-messages "./bin/substrate-relay\
 	millau-messages-to-rialto\
