@@ -91,6 +91,40 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-eve "./bin/millau-bridge-node\
 sleep 20
 
 ###############################################################################
+### Initialize header bridges #################################################
+###############################################################################
+
+# common variables
+MILLAU_HOST=127.0.0.1
+MILLAU_PORT=10944
+RIALTO_HOST=127.0.0.1
+RIALTO_PORT=9944
+RELAY_BINARY_PATH=./bin/substrate-relay
+RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info
+export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
+
+# initialize Millau -> Rialto headers bridge
+./run-with-log.sh initialize-millau-to-rialto "./bin/substrate-relay\
+	initialize-millau-headers-bridge-in-rialto\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--rialto-signer=//Alice"&
+
+# initialize Rialto -> Millau headers bridge
+./run-with-log.sh initialize-rialto-to-millau "./bin/substrate-relay\
+	initialize-rialto-headers-bridge-in-millau\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//Alice"&
+
+# wait until transactions are mined
+sleep 10
+
+###############################################################################
 ### Start generating messages on Millau <-> Rialto lanes ######################
 ###############################################################################
 
@@ -103,15 +137,6 @@ sleep 20
 ### Starting Millau -> Rialto relays ##########################################
 ###############################################################################
 
-# common variables
-MILLAU_HOST=127.0.0.1
-MILLAU_PORT=10944
-RIALTO_HOST=127.0.0.1
-RIALTO_PORT=9944
-RELAY_BINARY_PATH=./bin/substrate-relay
-RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info
-export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
-
 # start millau-headers-to-rialto relay
 ./run-with-log.sh relay-millau-to-rialto "./bin/substrate-relay\
 	millau-headers-to-rialto\
@@ -123,7 +148,7 @@ export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LO
 	--prometheus-port=9700"&
 
 # start rialto-headers-to-millau relay
-./run-with-log.sh relay-millau-to-rialto "./bin/substrate-relay\
+./run-with-log.sh relay-rialto-to-millau "./bin/substrate-relay\
 	rialto-headers-to-millau\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
