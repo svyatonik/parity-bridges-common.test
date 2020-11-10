@@ -17,10 +17,10 @@ echo password >data/password
 mkdir -p data/poa-arthur.db/keys
 mkdir -p data/poa-bertha.db/keys
 mkdir -p data/poa-carlos.db/keys
-cp $BRIDGES_REPO_PATH/deployments/rialto/poa-config/keys/BridgePoa/arthur.json data/poa-arthur.db/keys
-cp $BRIDGES_REPO_PATH/deployments/rialto/poa-config/keys/BridgePoa/bertha.json data/poa-bertha.db/keys
-cp $BRIDGES_REPO_PATH/deployments/rialto/poa-config/keys/BridgePoa/carlos.json data/poa-carlos.db/keys
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/poa-config/poa.json data
+cp $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/poa-config/keys/BridgePoa/arthur.json data/poa-arthur.db/keys
+cp $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/poa-config/keys/BridgePoa/bertha.json data/poa-bertha.db/keys
+cp $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/poa-config/keys/BridgePoa/carlos.json data/poa-carlos.db/keys
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/poa-config/poa.json data
 echo "enode://543d0874df46dff238d62547160f9d11e3d21897d7041bbbe46a04d2ee56d9eaf108f2133c0403159624f7647198e224d0755d23ad0e1a50c0912973af6e8a8a@127.0.0.1:30303" >data/reserved
 echo "enode://710de70733e88a24032e53054985f7239e37351f5f3335a468a1a78a3026e9f090356973b00262c346a6608403df2c7107fc4def2cfe4995ea18a41292b9384f@127.0.0.1:30304" >>data/reserved
 echo "enode://943525f415b9482f1c49bd39eb979e4e2b406f4137450b0553bffa5cba2928e25ff89ef70f7325aad8a75dbb5955eaecc1aee7ac55d66bcaaa07c8ea58adb23a@127.0.0.1:30305" >>data/reserved
@@ -170,7 +170,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 # start generating exchange transactions on PoA nodes
 ./run-with-log.sh \
 	poa-exchange-tx-generator\
-	$BRIDGES_REPO_PATH/deployments/rialto/bridge-config/poa-exchange-tx-generator-entrypoint.sh&
+	$BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/entrypoints/poa-exchange-tx-generator-entrypoint.sh&
 
 # start relaying exchange transactions from PoA to Susbtrate
 ./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
@@ -208,12 +208,12 @@ sleep 20
 # copy files requires for dashboard
 rm -rf data/rialto-dashboards
 mkdir -p data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/prometheus/prometheus.yml data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/rialto-dashboards
-yes | cp -rf $BRIDGES_REPO_PATH/deployments/rialto/dashboard/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/prometheus/prometheus.yml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/grafana/provisioning/datasources/grafana-datasource.yaml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/grafana/provisioning/dashboards/grafana-dashboard.yaml data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/grafana/provisioning/dashboards/relay-eth2sub-sync-dashboard.json data/rialto-dashboards
+yes | cp -rf $BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/dashboard/grafana/provisioning/dashboards/relay-sub2eth-sync-dashboard.json data/rialto-dashboards
 sed -i 's/relay-eth2sub:9616/127.0.0.1:9650/g' data/rialto-dashboards/prometheus.yml
 sed -i 's/relay-eth-exchange-sub:9616/127.0.0.1:9651/g' data/rialto-dashboards/prometheus.yml
 sed -i 's/relay-sub2eth:9616/127.0.0.1:9653/g' data/rialto-dashboards/prometheus.yml
