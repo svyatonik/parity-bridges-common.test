@@ -8,3 +8,4 @@
 
 bash ./start-rialto.sh
 bash ./start-millau.sh
+bash ./start-dashboards.sh
