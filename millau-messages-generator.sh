@@ -14,9 +14,9 @@ MILLAU_HOST=127.0.0.1
 # Millau node port
 MILLAU_PORT=10946
 # Millau signer
-MILLAU_SIGNER=//Charlie
+MILLAU_SIGNER=//Dave
 # Rialto signer
-RIALTO_SIGNER=//Charlie
+RIALTO_SIGNER=//Dave
 # Max delay before submitting transactions (s)
 MAX_SUBMIT_DELAY_S=60
 # Lane to send message over

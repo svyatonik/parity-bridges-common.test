@@ -149,7 +149,7 @@ sleep 10
 	--millau-port=$MILLAU_PORT\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
-	--rialto-signer=//Bob\
+	--rialto-signer=//Charlie\
 	--prometheus-port=9700"&
 
 # start rialto-headers-to-millau relay
@@ -159,7 +159,7 @@ sleep 10
 	--rialto-port=$RIALTO_PORT\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
-	--millau-signer=//Bob\
+	--millau-signer=//Charlie\
 	--prometheus-port=9701"&
 
 # start millau-messages-to-rialto relay
@@ -167,10 +167,10 @@ sleep 10
 	millau-messages-to-rialto\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
-	--millau-signer=//Alice\
+	--millau-signer=//Eve\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
-	--rialto-signer=//Charlie\
+	--rialto-signer=//Eve\
 	--prometheus-port=9702\
 	--lane=00000000"&
 
@@ -179,9 +179,9 @@ sleep 10
 	rialto-messages-to-millau\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
-	--rialto-signer=//Eve\
+	--rialto-signer=//Ferdie\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
-	--millau-signer=//Eve\
+	--millau-signer=//Ferdie\
 	--prometheus-port=9703\
 	--lane=00000000"&

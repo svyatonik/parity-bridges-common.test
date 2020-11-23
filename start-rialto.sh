@@ -165,6 +165,7 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 ./run-with-log.sh relay-eth-to-sub "./bin/ethereum-poa-relay\
 	eth-to-sub\
 	--sub-port=9944\
+	--sub-signer=//Alice\
 	--prometheus-port=9650"&
 
 # start generating exchange transactions on PoA nodes
@@ -172,10 +173,11 @@ export ETH_HOST RELAY_BINARY_PATH RUST_LOG
 	poa-exchange-tx-generator\
 	$BRIDGES_REPO_PATH/deployments/bridges/poa-rialto/entrypoints/poa-exchange-tx-generator-entrypoint.sh&
 
-# start relaying exchange transactions from PoA to Susbtrate
+# start relaying exchange transactions from PoA to Substrate
 ./run-with-log.sh relay-eth-exchange-sub "./bin/ethereum-poa-relay\
 	eth-exchange-sub\
 	--sub-port=9944\
+	--sub-signer=//Bob\
 	--prometheus-port=9651"&
 
 ###############################################################################
