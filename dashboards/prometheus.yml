@@ -23,3 +23,7 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets: ['127.0.0.1:9702']
+  - job_name: 'rialto2millau_00000000_lane_relay'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['127.0.0.1:9703']

@@ -133,6 +133,11 @@ sleep 10
 	millau-to-rialto-messages-generator\
 	./millau-messages-generator.sh&
 
+# start generating Rialto -> Millau messages
+./run-with-log.sh \
+	rialto-to-millau-messages-generator\
+	./rialto-messages-generator.sh&
+
 ###############################################################################
 ### Starting Millau -> Rialto relays ##########################################
 ###############################################################################
@@ -167,4 +172,16 @@ sleep 10
 	--rialto-port=$RIALTO_PORT\
 	--rialto-signer=//Charlie\
 	--prometheus-port=9702\
+	--lane=00000000"&
+
+# start rialto-messages-to-millau relay
+./run-with-log.sh relay-rialto-to-millau-messages "./bin/substrate-relay\
+	rialto-messages-to-millau\
+	--rialto-host=$RIALTO_HOST\
+	--rialto-port=$RIALTO_PORT\
+	--rialto-signer=//Eve\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//Eve\
+	--prometheus-port=9703\
 	--lane=00000000"&

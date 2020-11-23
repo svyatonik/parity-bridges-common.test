@@ -51,6 +51,14 @@ sed -i 's/{LANE_ID}/00000000/g' data/dashboards/relay-millau2rialto-messages-000
 sed -i 's/{BRIDGE_ID}/relay-millau2rialto-messages-00000000/g' data/dashboards/relay-millau2rialto-messages-00000000-dashboard.json
 sed -i 's/{BRIDGE_NAME}/millau2rialto-messages-00000000/g' data/dashboards/relay-millau2rialto-messages-00000000-dashboard.json
 
+# prepare Rialto -> Millau messages relay dashboard (lane 00000000)
+cp -rf dashboards/relay-messages-dashboard.json data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+sed -i 's/{SOURCE_NAME}/Rialto/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+sed -i 's/{TARGET_NAME}/Millau/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+sed -i 's/{LANE_ID}/00000000/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+sed -i 's/{BRIDGE_ID}/relay-rialto2millau-messages-00000000/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+sed -i 's/{BRIDGE_NAME}/rialto2millau-messages-00000000/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
+
 # run prometheus (http://127.0.0.1:9090/)
 docker container rm relay-prometheus | true
 docker run \
@@ -73,5 +81,6 @@ docker run \
 	-v `realpath data/dashboards/relay-rialto2millau-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-dashboard.json \
 	-v `realpath data/dashboards/relay-millau2rialto-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-dashboard.json \
 	-v `realpath data/dashboards/relay-millau2rialto-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-messages-00000000-dashboard.json \
+	-v `realpath data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-messages-00000000-dashboard.json \
 	-v `realpath data/dashboards/my.json`:/etc/grafana/provisioning/dashboards/my.json \
 	grafana/grafana&
