@@ -1,0 +1,2 @@
+#!/bin/bash
+curl --location --request POST 'http://localhost:10933' --header 'Content-Type: application/json' --data-raw '{"jsonrpc": "2.0", "method": "system_health", "params": [], "id": 1}' 2>/dev/null

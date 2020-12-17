@@ -30,7 +30,7 @@ do
 	sleep $SUBMIT_DELAY_S
 
 	# prepare message to send
-	MESSAGE=Remark
+	MESSAGE=remark
 
 	# prepare fee to pay
 	FEE=100000000
@@ -43,6 +43,7 @@ do
 		--rialto-signer=$RIALTO_SIGNER\
 		--millau-signer=$MILLAU_SIGNER\
 		--lane=$LANE\
-		--message=$MESSAGE\
-		--fee=$FEE
+		--origin Target \
+		--fee=$FEE \
+		$MESSAGE
 done
