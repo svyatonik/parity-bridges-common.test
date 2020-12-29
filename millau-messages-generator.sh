@@ -44,6 +44,5 @@ do
 		--rialto-signer=$RIALTO_SIGNER\
 		--lane=$LANE\
 		--origin Target \
-		--fee=$FEE \
 		$MESSAGE
 done
