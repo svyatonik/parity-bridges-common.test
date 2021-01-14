@@ -44,6 +44,5 @@ do
 		--millau-signer=$MILLAU_SIGNER\
 		--lane=$LANE\
 		--origin Target \
-		--fee=$FEE \
 		$MESSAGE
 done
