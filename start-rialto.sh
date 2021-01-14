@@ -81,7 +81,7 @@ rm -rf data/rialto-dave.db
 rm -rf data/rialto-eve.db
 
 # start Rialto nodes
-RUST_LOG=runtime=trace ./run-with-log.sh rialto-alice "./bin/rialto-bridge-node\
+./run-with-log.sh rialto-alice "./bin/rialto-bridge-node\
 	--alice\
 	--base-path=data/rialto-alice.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWSEpHJj29HEzgPFcRYVc5X3sEuP3KgiUoqJNCet51NiMX\
@@ -95,7 +95,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-alice "./bin/rialto-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh rialto-bob "./bin/rialto-bridge-node\
+./run-with-log.sh rialto-bob "./bin/rialto-bridge-node\
 	--bob\
 	--base-path=data/rialto-bob.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\
@@ -109,7 +109,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-bob "./bin/rialto-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh rialto-charlie "./bin/rialto-bridge-node\
+./run-with-log.sh rialto-charlie "./bin/rialto-bridge-node\
 	--charlie\
 	--base-path=data/rialto-charlie.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\
@@ -122,7 +122,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-charlie "./bin/rialto-bridge-nod
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh rialto-dave "./bin/rialto-bridge-node\
+./run-with-log.sh rialto-dave "./bin/rialto-bridge-node\
 	--dave\
 	--base-path=data/rialto-dave.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\
@@ -135,7 +135,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh rialto-dave "./bin/rialto-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh rialto-eve "./bin/rialto-bridge-node\
+./run-with-log.sh rialto-eve "./bin/rialto-bridge-node\
 	--eve\
 	--base-path=data/rialto-eve.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMF6JvV319a7kJn5pqkKbhR3fcM2cvK5vCbYZHeQhYzFE\

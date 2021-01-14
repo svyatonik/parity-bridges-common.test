@@ -9,6 +9,9 @@
 
 # TODO: Millau should use other authorities && other session management
 
+RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace
+export RUST_LOG
+
 # remove Millau databases
 rm -rf data/millau-alice.db
 rm -rf data/millau-bob.db
@@ -17,7 +20,7 @@ rm -rf data/millau-dave.db
 rm -rf data/millau-eve.db
 
 # start Millau nodes
-RUST_LOG=runtime=trace ./run-with-log.sh millau-alice "./bin/millau-bridge-node\
+./run-with-log.sh millau-alice "./bin/millau-bridge-node\
 	--alice\
 	--base-path=data/millau-alice.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/40334/p2p/12D3KooWM5LFR5ne4yTQ4sBSXJ75M4bDo2MAhAW2GhL3i8fe5aRb\
@@ -31,7 +34,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-alice "./bin/millau-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh millau-bob "./bin/millau-bridge-node\
+./run-with-log.sh millau-bob "./bin/millau-bridge-node\
 	--bob\
 	--base-path=data/millau-bob.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/40333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
@@ -45,7 +48,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-bob "./bin/millau-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh millau-charlie "./bin/millau-bridge-node\
+./run-with-log.sh millau-charlie "./bin/millau-bridge-node\
 	--charlie\
 	--base-path=data/millau-charlie.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/40333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
@@ -58,7 +61,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-charlie "./bin/millau-bridge-nod
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh millau-dave "./bin/millau-bridge-node\
+./run-with-log.sh millau-dave "./bin/millau-bridge-node\
 	--dave\
 	--base-path=data/millau-dave.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/40333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
@@ -71,7 +74,7 @@ RUST_LOG=runtime=trace ./run-with-log.sh millau-dave "./bin/millau-bridge-node\
 	--rpc-cors=all\
 	--unsafe-rpc-external\
 	--unsafe-ws-external"&
-RUST_LOG=runtime=trace ./run-with-log.sh millau-eve "./bin/millau-bridge-node\
+./run-with-log.sh millau-eve "./bin/millau-bridge-node\
 	--eve\
 	--base-path=data/millau-eve.db\
 	--bootnodes=/ip4/127.0.0.1/tcp/40333/p2p/12D3KooWFqiV73ipQ1jpfVmCfLqBCp8G9PLH3zPkY9EhmdrSGA4H\
@@ -100,7 +103,7 @@ MILLAU_PORT=10944
 RIALTO_HOST=127.0.0.1
 RIALTO_PORT=9944
 RELAY_BINARY_PATH=./bin/substrate-relay
-RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace
+RUST_LOG=bridge=trace,bridge-metrics=info
 export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
 
 # initialize Millau -> Rialto headers bridge
