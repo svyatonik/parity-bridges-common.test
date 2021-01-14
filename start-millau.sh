@@ -100,7 +100,7 @@ MILLAU_PORT=10944
 RIALTO_HOST=127.0.0.1
 RIALTO_PORT=9944
 RELAY_BINARY_PATH=./bin/substrate-relay
-RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info
+RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace
 export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
 
 # initialize Millau -> Rialto headers bridge

@@ -70,6 +70,9 @@ RUST_LOG=bridge-builtin=trace ./run-with-log.sh poa-carlos "./bin/parity\
 ### Rialto (Substrate) chain startup ##########################################
 ###############################################################################
 
+RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace
+export RUST_LOG
+
 # remove Rialto databases
 rm -rf data/rialto-alice.db
 rm -rf data/rialto-bob.db
