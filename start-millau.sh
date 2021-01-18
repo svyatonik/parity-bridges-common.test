@@ -9,7 +9,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace
+RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace
 export RUST_LOG
 
 # remove Millau databases
