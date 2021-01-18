@@ -32,9 +32,6 @@ do
 	# prepare message to send
 	MESSAGE=remark
 
-	# prepare fee to pay
-	FEE=100000000
-
 	# submit message
 	echo "Sending message from Rialto to Millau"
 	$RELAY_BINARY_PATH 2>&1 submit-rialto-to-millau-message \
