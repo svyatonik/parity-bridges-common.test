@@ -288,7 +288,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=~\"source_latest_generated|target_latest_received\"}, \"type\", \"Latest message sent from {SOURCe_NAME}\", \"type\", \"source_latest_generated\"), \"type\", \"Latest message received by {TARGET_NAME}\", \"type\", \"target_latest_received\")",
+			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=~\"source_latest_generated|target_latest_received\"}, \"type\", \"Latest message sent from {SOURCE_NAME}\", \"type\", \"source_latest_generated\"), \"type\", \"Latest message received by {TARGET_NAME}\", \"type\", \"target_latest_received\")",
 			"interval": "",
 			"legendFormat": "{{type}}",
 			"refId": "A"
