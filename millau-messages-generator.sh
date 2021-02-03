@@ -21,6 +21,21 @@ RIALTO_SIGNER=//Dave
 MAX_SUBMIT_DELAY_S=60
 # Lane to send message over
 LANE=00000000
+# Maximal number of unconfirmed messages at the bridged chain
+# (actually it is larger than both in Rialto and Millau - we only care about it being ge than actual value)
+MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=2048
+
+# submit Millau to Rialto message
+submit_message() {
+	$RELAY_BINARY_PATH 2>&1 submit-millau-to-rialto-message \
+		--millau-host=$MILLAU_HOST\
+		--millau-port=$MILLAU_PORT\
+		--millau-signer=$MILLAU_SIGNER\
+		--rialto-signer=$RIALTO_SIGNER\
+		--lane=$LANE\
+		--origin Target \
+		$1
+}
 
 while true
 do
@@ -34,12 +49,34 @@ do
 
 	# submit message
 	echo "Sending message from Millau to Rialto"
-	$RELAY_BINARY_PATH 2>&1 submit-millau-to-rialto-message \
-		--millau-host=$MILLAU_HOST\
-		--millau-port=$MILLAU_PORT\
-		--millau-signer=$MILLAU_SIGNER\
-		--rialto-signer=$RIALTO_SIGNER\
-		--lane=$LANE\
-		--origin Target \
-		$MESSAGE
+	submit_message $MESSAGE
+
+	# submit messages with maximal size. chance ~10%
+	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+		MESSAGES_COUNT=`shuf -i 1-6 -n 1`
+		echo "Sending $MESSAGES_COUNT maximal size messages from Millau to Rialto"
+		for i in $(seq 1 $MESSAGES_COUNT);
+		do
+			submit_message maximal-size-remark
+		done
+	fi
+
+	# submit messages with maximal dispatch weight. chance ~10%
+	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+		MESSAGES_COUNT=`shuf -i 1-6 -n 1`
+		echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Millau to Rialto"
+		for i in $(seq 1 $MESSAGES_COUNT);
+		do
+			submit_message maximal-weight-fill-block
+		done
+	fi
+
+	# submit messages with maximal dispatch weight. chance ~10%
+	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+		echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Millau to Rialto"
+		for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+		do
+			submit_message remark
+		done
+	fi
 done
