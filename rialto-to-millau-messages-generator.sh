@@ -21,9 +21,8 @@ MILLAU_SIGNER=//Alice
 MAX_SUBMIT_DELAY_S=60
 # Lane to send message over
 LANE=00000000
-# Maximal number of unconfirmed messages at the bridged chain
-# (actually it is larger than both in Rialto and Millau - we only care about it being ge than actual value)
-MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=2048
+# Maximal number of unconfirmed messages at the target chain (Millau)
+MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=1024
 
 # submit Rialto to Millau message
 submit_message() {

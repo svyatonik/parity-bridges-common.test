@@ -134,12 +134,12 @@ sleep 10
 # start generating Millau -> Rialto messages
 ./run-with-log.sh \
 	millau-to-rialto-messages-generator\
-	./millau-messages-generator.sh&
+	./millau-to-rialto-messages-generator.sh&
 
 # start generating Rialto -> Millau messages
 ./run-with-log.sh \
 	rialto-to-millau-messages-generator\
-	./rialto-messages-generator.sh&
+	./rialto-to-millau-messages-generator.sh&
 
 ###############################################################################
 ### Starting Millau -> Rialto relays ##########################################
