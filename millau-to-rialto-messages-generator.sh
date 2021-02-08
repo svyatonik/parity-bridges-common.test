@@ -21,7 +21,7 @@ RIALTO_SIGNER=//Dave
 MAX_SUBMIT_DELAY_S=60
 # Lane to send message over
 LANE=00000000
-# Maximal number of unconfirmed messages at the target chain (Millau)
+# Maximal number of unconfirmed messages at the target chain (Rialto)
 MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=128
 
 # submit Millau to Rialto message
@@ -36,10 +36,11 @@ submit_message() {
 		$1
 }
 
+BATCH_TIME=0
 while true
 do
-	# sleep some time
 	SUBMIT_DELAY_S=`shuf -i 0-$MAX_SUBMIT_DELAY_S -n 1`
+	# sleep some time
 	echo "Sleeping $SUBMIT_DELAY_S seconds..."
 	sleep $SUBMIT_DELAY_S
 
@@ -70,12 +71,16 @@ do
 		done
 	fi
 
-	# submit messages with maximal dispatch weight. chance ~10%
-	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
-		echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Millau to Rialto"
-		for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
-		do
-			submit_message remark
-		done
+	# submit a lot of regular messages. chance ~10%, but at most once per 30m
+	if [ $SECONDS -ge $BATCH_TIME ]; then
+		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+			BATCH_TIME=$((SECONDS + 1800))
+
+			echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Millau to Rialto"
+			for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+			do
+				submit_message remark
+			done
+		fi
 	fi
 done

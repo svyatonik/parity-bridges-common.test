@@ -36,6 +36,7 @@ submit_message() {
 		$1
 }
 
+BATCH_TIME=0
 while true
 do
 	# sleep some time
@@ -70,12 +71,16 @@ do
 		done
 	fi
 
-	# submit messages with maximal dispatch weight. chance ~10%
-	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
-		echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Rialto to Millau"
-		for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
-		do
-			submit_message remark
-		done
+	# submit a lot of regular messages. chance ~10%, but at most once per 30m
+	if [ $SECONDS -ge $BATCH_TIME ]; then
+		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+			BATCH_TIME=$((SECONDS + 1800))
+
+			echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Rialto to Millau"
+			for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+			do
+				submit_message remark
+			done
+		fi
 	fi
 done
