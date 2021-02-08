@@ -5,8 +5,9 @@ killall -9 millau-bridge-node
 killall -9 rialto-bridge-node
 killall -9 ethereum-poa-relay
 killall -9 substrate-relay
-kill -9 `ps -A -o pid,args -C bash | awk '/poa-exchange-tx-generator-entrypoint.sh/ { print $1 }' | head -n 1`
-kill -9 `ps -A -o pid,args -C bash | awk '/millau-messages-generator.sh/ { print $1 }' | head -n 1`
-kill -9 `ps -A -o pid,args -C bash | awk '/rialto-messages-generator.sh/ { print $1 }' | head -n 1`
+pkill -9 -f 'sleep 30'
+pkill -9 -f 'poa-exchange-tx-generator-entrypoint.sh'
+pkill -9 -f 'millau-messages-generator.sh'
+pkill -9 -f 'rialto-messages-generator.sh'
 docker stop relay-prometheus
 docker stop relay-grafana
