@@ -107,8 +107,8 @@ RUST_LOG=bridge=trace,bridge-metrics=info
 export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
 
 # initialize Millau -> Rialto headers bridge
-./run-with-log.sh initialize-millau-to-rialto "./bin/substrate-relay\
-	initialize-millau-headers-bridge-in-rialto\
+./run-with-log.sh initialize-millau-to-rialto "$RELAY_BINARY_PATH\
+	init-bridge millau-to-rialto\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
 	--rialto-host=$RIALTO_HOST\
@@ -116,8 +116,8 @@ export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LO
 	--rialto-signer=//Alice"&
 
 # initialize Rialto -> Millau headers bridge
-./run-with-log.sh initialize-rialto-to-millau "./bin/substrate-relay\
-	initialize-rialto-headers-bridge-in-millau\
+./run-with-log.sh initialize-rialto-to-millau "$RELAY_BINARY_PATH\
+	init-bridge rialto-to-millau\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
 	--millau-host=$MILLAU_HOST\
@@ -146,8 +146,8 @@ sleep 10
 ###############################################################################
 
 # start millau-headers-to-rialto relay
-./run-with-log.sh relay-millau-to-rialto "./bin/substrate-relay\
-	millau-headers-to-rialto\
+./run-with-log.sh relay-millau-to-rialto "$RELAY_BINARY_PATH\
+	relay-headers millau-to-rialto\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
 	--rialto-host=$RIALTO_HOST\
@@ -156,8 +156,8 @@ sleep 10
 	--prometheus-port=9700"&
 
 # start rialto-headers-to-millau relay
-./run-with-log.sh relay-rialto-to-millau "./bin/substrate-relay\
-	rialto-headers-to-millau\
+./run-with-log.sh relay-rialto-to-millau "$RELAY_BINARY_PATH\
+	relay-headers rialto-to-millau\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
 	--millau-host=$MILLAU_HOST\
@@ -166,8 +166,8 @@ sleep 10
 	--prometheus-port=9701"&
 
 # start millau-messages-to-rialto relay
-./run-with-log.sh relay-millau-to-rialto-messages "./bin/substrate-relay\
-	millau-messages-to-rialto\
+./run-with-log.sh relay-millau-to-rialto-messages "$RELAY_BINARY_PATH\
+	relay-messages millau-to-rialto\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
 	--millau-signer=//Eve\
@@ -178,8 +178,8 @@ sleep 10
 	--lane=00000000"&
 
 # start rialto-messages-to-millau relay
-./run-with-log.sh relay-rialto-to-millau-messages "./bin/substrate-relay\
-	rialto-messages-to-millau\
+./run-with-log.sh relay-rialto-to-millau-messages "$RELAY_BINARY_PATH\
+	relay-messages rialto-to-millau\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
 	--rialto-signer=//Ferdie\

@@ -27,15 +27,23 @@ MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=128
 
 # submit Millau to Rialto message
 submit_message() {
-	$RELAY_BINARY_PATH 2>&1 submit-millau-to-rialto-message \
+	MESSAGE_PARAMS="$*"
+	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
 		--millau-host=$MILLAU_HOST\
 		--millau-port=$MILLAU_PORT\
 		--millau-signer=$MILLAU_SIGNER\
 		--rialto-signer=$RIALTO_SIGNER\
 		--lane=$LANE\
 		--origin Target \
-		$1
+		$MESSAGE_PARAMS
 }
+
+if [ ! -z "$GENERATE_LARGE_MESSAGES" ]; then
+	# capture maximal dispatch weight && Call arguments size
+	OUTPUT=`./bin/substrate-relay print-message-limits millau-to-rialto 2>&1`
+	MAXIMAL_DISPATCH_WEIGHT=`echo $OUTPUT | grep -oP '(?<=Maximal message dispatch weight: )([\d]*)'`
+	MAXIMAL_ARGUMENTS_SIZE=`echo $OUTPUT | grep -oP '(?<=Maximal message arguments size: )([\d]*)'`
+fi
 
 BATCH_TIME=0
 while true
@@ -60,7 +68,7 @@ do
 			echo "Sending $MESSAGES_COUNT maximal size messages from Millau to Rialto"
 			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message maximal-size-remark
+				submit_message remark --remark-size=$MAXIMAL_ARGUMENTS_SIZE
 			done
 		fi
 
@@ -70,7 +78,7 @@ do
 			echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Millau to Rialto"
 			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message maximal-weight-fill-block
+				submit_message --dispatch-weight=$MAXIMAL_DISPATCH_WEIGHT remark
 			done
 		fi
 
