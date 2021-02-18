@@ -1,4 +1,5 @@
 #!/bin/bash
+. ./prelude.sh
 
 # THIS SCRIPT IS NOT INTENDED FOR USE IN PRODUCTION ENVIRONMENT
 #
@@ -51,36 +52,40 @@ do
 	echo "Sending message from Rialto to Millau"
 	submit_message $MESSAGE
 
-	# submit messages with maximal size. chance ~10%
-	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
-		MESSAGES_COUNT=`shuf -i 1-6 -n 1`
-		echo "Sending $MESSAGES_COUNT maximal size messages from Rialto to Millau"
-		for i in $(seq 1 $MESSAGES_COUNT);
-		do
-			submit_message maximal-size-remark
-		done
-	fi
+	if [ ! -z "$GENERATE_LARGE_MESSAGES" ]; then
 
-	# submit messages with maximal dispatch weight. chance ~10%
-	if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
-		MESSAGES_COUNT=`shuf -i 1-6 -n 1`
-		echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Rialto to Millau"
-		for i in $(seq 1 $MESSAGES_COUNT);
-		do
-			submit_message maximal-weight-fill-block
-		done
-	fi
-
-	# submit a lot of regular messages. chance ~10%, but at most once per 30m
-	if [ $SECONDS -ge $BATCH_TIME ]; then
+		# submit messages with maximal size. chance ~10%
 		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
-			BATCH_TIME=$((SECONDS + 1800))
-
-			echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Rialto to Millau"
-			for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+			MESSAGES_COUNT=`shuf -i 1-6 -n 1`
+			echo "Sending $MESSAGES_COUNT maximal size messages from Rialto to Millau"
+			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message remark
+				submit_message maximal-size-remark
 			done
 		fi
+
+		# submit messages with maximal dispatch weight. chance ~10%
+		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+			MESSAGES_COUNT=`shuf -i 1-6 -n 1`
+			echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Rialto to Millau"
+			for i in $(seq 1 $MESSAGES_COUNT);
+			do
+				submit_message maximal-weight-fill-block
+			done
+		fi
+
+		# submit a lot of regular messages. chance ~10%, but at most once per 30m
+		if [ $SECONDS -ge $BATCH_TIME ]; then
+			if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+				BATCH_TIME=$((SECONDS + 1800))
+
+				echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Rialto to Millau"
+				for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+				do
+					submit_message remark
+				done
+			fi
+		fi
+
 	fi
 done

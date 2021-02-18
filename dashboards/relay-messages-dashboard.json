@@ -719,142 +719,148 @@
 		}
 	  },
 	  {
-		"alert": {
-		  "alertRuleTags": {},
-		  "conditions": [
-			{
-			  "evaluator": {
-				"params": [
-				  10
+			"alert": {
+				"alertRuleTags": {},
+				"conditions": [
+					{
+						"evaluator": {
+							"params": [
+								10
+							],
+							"type": "gt"
+						},
+						"operator": {
+							"type": "and"
+						},
+						"query": {
+							"params": [
+								"B",
+								"5m",
+								"now"
+							]
+						},
+						"reducer": {
+							"params": [],
+							"type": "min"
+						},
+						"type": "query"
+					}
 				],
-				"type": "gt"
-			  },
-			  "operator": {
-				"type": "and"
-			  },
-			  "query": {
-				"params": [
-				  "A",
-				  "5m",
-				  "now"
-				]
-			  },
-			  "reducer": {
-				"params": [],
-				"type": "min"
-			  },
-			  "type": "query"
+				"executionErrorState": "alerting",
+				"for": "5m",
+				"frequency": "1m",
+				"handler": 1,
+				"name": "Rewards are not being confirmed",
+				"noDataState": "no_data",
+				"notifications": []
+			},
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": "Prometheus",
+			"fieldConfig": {
+				"defaults": {
+					"custom": {}
+				},
+				"overrides": []
+			},
+			"fill": 1,
+			"fillGradient": 0,
+			"gridPos": {
+				"h": 7,
+				"w": 8,
+				"x": 16,
+				"y": 20
+			},
+			"hiddenSeries": false,
+			"id": 14,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"nullPointMode": "null",
+			"options": {
+				"dataLinks": []
+			},
+			"percentage": false,
+			"pointradius": 2,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_confirmed\"}[2m]))",
+					"interval": "",
+					"legendFormat": "Unconfirmed rewards at {TARGET_NAME}",
+					"refId": "A"
+				},
+				{
+					"expr": "(scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_confirmed\"}[2m]))) * (max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m]) > bool min_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m]))",
+					"interval": "",
+					"legendFormat": "Unconfirmed rewards at {TARGET_NAME} (zero if no messages are not being delivered)",
+					"refId": "B"
+				}
+			],
+			"thresholds": [
+				{
+					"value": 10,
+					"op": "gt",
+					"fill": true,
+					"line": true,
+					"colorMode": "critical"
+				}
+			],
+			"timeFrom": null,
+			"timeRegions": [],
+			"timeShift": null,
+			"title": "Reward lags",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
 			}
-		  ],
-		  "executionErrorState": "alerting",
-		  "for": "5m",
-		  "frequency": "1m",
-		  "handler": 1,
-		  "name": "Too many unconfirmed rewards",
-		  "noDataState": "no_data",
-		  "notifications": []
 		},
-		"aliasColors": {},
-		"bars": false,
-		"dashLength": 10,
-		"dashes": false,
-		"datasource": "Prometheus",
-		"fieldConfig": {
-		  "defaults": {
-			"custom": {}
-		  },
-		  "overrides": []
-		},
-		"fill": 1,
-		"fillGradient": 0,
-		"gridPos": {
-		  "h": 7,
-		  "w": 8,
-		  "x": 16,
-		  "y": 20
-		},
-		"hiddenSeries": false,
-		"id": 14,
-		"legend": {
-		  "avg": false,
-		  "current": false,
-		  "max": false,
-		  "min": false,
-		  "show": true,
-		  "total": false,
-		  "values": false
-		},
-		"lines": true,
-		"linewidth": 1,
-		"nullPointMode": "null",
-		"options": {
-		  "dataLinks": []
-		},
-		"percentage": false,
-		"pointradius": 2,
-		"points": false,
-		"renderer": "flot",
-		"seriesOverrides": [],
-		"spaceLength": 10,
-		"stack": false,
-		"steppedLine": false,
-		"targets": [
-		  {
-			"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_confirmed\"}[2m]))",
-			"interval": "",
-			"legendFormat": "Unconfirmed rewards at {TARGET_NAME}",
-			"refId": "A"
-		  }
-		],
-		"thresholds": [
-		  {
-			"colorMode": "critical",
-			"fill": true,
-			"line": true,
-			"op": "gt",
-			"value": 10
-		  }
-		],
-		"timeFrom": null,
-		"timeRegions": [],
-		"timeShift": null,
-		"title": "Reward lags",
-		"tooltip": {
-		  "shared": true,
-		  "sort": 0,
-		  "value_type": "individual"
-		},
-		"type": "graph",
-		"xaxis": {
-		  "buckets": null,
-		  "mode": "time",
-		  "name": null,
-		  "show": true,
-		  "values": []
-		},
-		"yaxes": [
-		  {
-			"format": "short",
-			"label": null,
-			"logBase": 1,
-			"max": null,
-			"min": null,
-			"show": true
-		  },
-		  {
-			"format": "short",
-			"label": null,
-			"logBase": 1,
-			"max": null,
-			"min": null,
-			"show": true
-		  }
-		],
-		"yaxis": {
-		  "align": false,
-		  "alignLevel": null
-		}
-	  },
 	  {
 		"datasource": "Prometheus",
 		"fieldConfig": {
