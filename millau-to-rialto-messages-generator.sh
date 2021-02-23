@@ -75,6 +75,16 @@ do
 			done
 		fi
 
+		# submit messages with both maximal size and dispatch weight. chance ~10%
+		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
+			MESSAGES_COUNT=`shuf -i 1-3 -n 1`
+			echo "Sending $MESSAGES_COUNT maximal size + dispatch weight messages from Millau to Rialto"
+			for i in $(seq 1 $MESSAGES_COUNT);
+			do
+				submit_message --dispatch-weight=max remark --remark-size=max
+			done
+		fi
+
 		# submit a lot of regular messages. chance ~10%, but at most once per 30m
 		if [ $SECONDS -ge $BATCH_TIME ]; then
 			if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
