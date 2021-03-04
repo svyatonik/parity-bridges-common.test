@@ -9,7 +9,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace
+RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace,jsonrpc_ws_server=trace,parity_ws=trace
 export RUST_LOG
 
 # remove Millau databases
@@ -103,7 +103,7 @@ MILLAU_PORT=10944
 RIALTO_HOST=127.0.0.1
 RIALTO_PORT=9944
 RELAY_BINARY_PATH=./bin/substrate-relay
-RUST_LOG=bridge=trace,bridge-metrics=info
+RUST_LOG=bridge=trace,bridge-metrics=info,jsonrpsee=trace,soketto=trace
 export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
 
 # initialize Millau -> Rialto headers bridge
