@@ -9,7 +9,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,pallet_substrate_bridge=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace,jsonrpc_ws_server=trace,parity_ws=trace
+RUST_LOG=runtime=trace,pallet_finality_verifier=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace
 export RUST_LOG
 
 # remove Millau databases
@@ -103,7 +103,7 @@ MILLAU_PORT=10944
 RIALTO_HOST=127.0.0.1
 RIALTO_PORT=9944
 RELAY_BINARY_PATH=./bin/substrate-relay
-RUST_LOG=bridge=trace,bridge-metrics=info,jsonrpsee=trace,soketto=trace
+RUST_LOG=bridge=trace,bridge-metrics=info
 export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LOG
 
 # initialize Millau -> Rialto headers bridge
@@ -188,3 +188,39 @@ sleep 10
 	--millau-signer=//Ferdie\
 	--prometheus-port=9703\
 	--lane=00000000"&
+
+###############################################################################
+### The rest is not executed if Westend -> Millau bridge is disabled ##########
+###############################################################################
+
+if [ -z "$DISABLE_WESTEND_TO_MILLAU" ]; then
+
+# common variables
+WESTEND_HOST=westend-rpc.polkadot.io
+WESTEND_PORT=443
+
+# initialize Westend -> Millau headers bridge
+./run-with-log.sh initialize-westend-to-millau "$RELAY_BINARY_PATH\
+	init-bridge westend-to-millau\
+	--westend-host=$WESTEND_HOST\
+	--westend-port=$WESTEND_PORT\
+	--westend-secure\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//Alice"&
+
+# wait until transactions are mined
+sleep 20
+
+# start westend-headers-to-millau relay
+./run-with-log.sh relay-westend-to-millau "$RELAY_BINARY_PATH\
+	relay-headers westend-to-millau\
+	--westend-host=$WESTEND_HOST\
+	--westend-port=$WESTEND_PORT\
+	--westend-secure\
+	--millau-host=$MILLAU_HOST\
+	--millau-port=$MILLAU_PORT\
+	--millau-signer=//George\
+	--prometheus-port=9704"&
+
+fi
