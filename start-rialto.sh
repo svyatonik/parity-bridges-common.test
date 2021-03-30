@@ -7,7 +7,7 @@
 ### Rialto (Substrate) chain startup ##########################################
 ###############################################################################
 
-RUST_LOG=bridge=trace,runtime=trace,bridge-metrics=info,pallet_finality_verifier=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace
+RUST_LOG=runtime=trac,runtime::bridge=trace,pallet_bridge_messages_rpc=trace
 export RUST_LOG
 
 # remove Rialto databases

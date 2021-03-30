@@ -9,7 +9,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,pallet_finality_verifier=trace,pallet_bridge_call_dispatch=trace,pallet_message_lane=trace,pallet_message_lane_rpc=trace
+RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace
 export RUST_LOG
 
 # remove Millau databases
@@ -207,7 +207,7 @@ WESTEND_PORT=443
 	--westend-secure\
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
-	--millau-signer=//Alice"&
+	--millau-signer=//George"&
 
 # wait until transactions are mined
 sleep 20

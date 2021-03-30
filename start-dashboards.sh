@@ -90,5 +90,4 @@ docker run \
 	-v `realpath data/dashboards/relay-westend2millau-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-westend2millau-dashboard.json \
 	-v `realpath data/dashboards/relay-millau2rialto-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-messages-00000000-dashboard.json \
 	-v `realpath data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-messages-00000000-dashboard.json \
-	-v `realpath data/dashboards/my.json`:/etc/grafana/provisioning/dashboards/my.json \
 	grafana/grafana&
