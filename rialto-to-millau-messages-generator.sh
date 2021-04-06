@@ -29,10 +29,10 @@ MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=1024
 submit_message() {
 	MESSAGE_PARAMS="$*"
 	$RELAY_BINARY_PATH 2>&1 send-message rialto-to-millau \
-		--rialto-host=$RIALTO_HOST\
-		--rialto-port=$RIALTO_PORT\
-		--rialto-signer=$RIALTO_SIGNER\
-		--millau-signer=$MILLAU_SIGNER\
+		--source-host=$RIALTO_HOST\
+		--source-port=$RIALTO_PORT\
+		--source-signer=$RIALTO_SIGNER\
+		--target-signer=$MILLAU_SIGNER\
 		--lane=$LANE\
 		--origin Target \
 		$MESSAGE_PARAMS
@@ -47,7 +47,7 @@ do
 	sleep $SUBMIT_DELAY_S
 
 	# prepare message to send
-	MESSAGE=remark
+	MESSAGE="remark --remark-payload=01234567"
 
 	# submit message
 	echo "Sending message from Rialto to Millau"
