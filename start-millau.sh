@@ -145,6 +145,54 @@ sleep 10
 ### Starting Millau -> Rialto relays ##########################################
 ###############################################################################
 
+if [ -z "$USE_COMPLEX_MILLAU_RIALTO_RELAY" ]; then
+
+# start millau-headers-to-rialto relay
+./run-with-log.sh relay-millau-to-rialto "$RELAY_BINARY_PATH\
+	relay-headers MillauToRialto\
+	--source-host=$MILLAU_HOST\
+	--source-port=$MILLAU_PORT\
+	--target-host=$RIALTO_HOST\
+	--target-port=$RIALTO_PORT\
+	--target-signer=//Charlie\
+	--prometheus-port=9700"&
+
+# start rialto-headers-to-millau relay
+./run-with-log.sh relay-rialto-to-millau "$RELAY_BINARY_PATH\
+	relay-headers RialtoToMillau\
+	--source-host=$RIALTO_HOST\
+	--source-port=$RIALTO_PORT\
+	--target-host=$MILLAU_HOST\
+	--target-port=$MILLAU_PORT\
+	--target-signer=//Charlie\
+	--prometheus-port=9701"&
+
+# start millau-messages-to-rialto relay
+./run-with-log.sh relay-millau-to-rialto-messages "$RELAY_BINARY_PATH\
+	relay-messages MillauToRialto\
+	--source-host=$MILLAU_HOST\
+	--source-port=$MILLAU_PORT\
+	--source-signer=//Eve\
+	--target-host=$RIALTO_HOST\
+	--target-port=$RIALTO_PORT\
+	--target-signer=//Eve\
+	--prometheus-port=9702\
+	--lane=00000000"&
+
+# start rialto-messages-to-millau relay
+./run-with-log.sh relay-rialto-to-millau-messages "$RELAY_BINARY_PATH\
+	relay-messages RialtoToMillau\
+	--source-host=$RIALTO_HOST\
+	--source-port=$RIALTO_PORT\
+	--source-signer=//Ferdie\
+	--target-host=$MILLAU_HOST\
+	--target-port=$MILLAU_PORT\
+	--target-signer=//Ferdie\
+	--prometheus-port=9703\
+	--lane=00000000"&
+
+else
+
 # start millau-rialto headers+messages relay
 ./run-with-log.sh relay-millau-rialto "$RELAY_BINARY_PATH\
 	relay-headers-and-messages millau-rialto\
@@ -157,49 +205,7 @@ sleep 10
 	--lane=00000000\
 	--prometheus-port=9700"&
 
-# start millau-headers-to-rialto relay
-#./run-with-log.sh relay-millau-to-rialto "$RELAY_BINARY_PATH\
-#	relay-headers MillauToRialto\
-#	--source-host=$MILLAU_HOST\
-#	--source-port=$MILLAU_PORT\
-#	--target-host=$RIALTO_HOST\
-#	--target-port=$RIALTO_PORT\
-#	--target-signer=//Charlie\
-#	--prometheus-port=9700"&
-
-# start rialto-headers-to-millau relay
-#./run-with-log.sh relay-rialto-to-millau "$RELAY_BINARY_PATH\
-#	relay-headers RialtoToMillau\
-#	--source-host=$RIALTO_HOST\
-#	--source-port=$RIALTO_PORT\
-#	--target-host=$MILLAU_HOST\
-#	--target-port=$MILLAU_PORT\
-#	--target-signer=//Charlie\
-#	--prometheus-port=9701"&
-
-# start millau-messages-to-rialto relay
-#./run-with-log.sh relay-millau-to-rialto-messages "$RELAY_BINARY_PATH\
-#	relay-messages MillauToRialto\
-#	--source-host=$MILLAU_HOST\
-#	--source-port=$MILLAU_PORT\
-#	--source-signer=//Eve\
-#	--target-host=$RIALTO_HOST\
-#	--target-port=$RIALTO_PORT\
-#	--target-signer=//Eve\
-#	--prometheus-port=9702\
-#	--lane=00000000"&
-
-# start rialto-messages-to-millau relay
-#./run-with-log.sh relay-rialto-to-millau-messages "$RELAY_BINARY_PATH\
-#	relay-messages RialtoToMillau\
-#	--source-host=$RIALTO_HOST\
-#	--source-port=$RIALTO_PORT\
-#	--source-signer=//Ferdie\
-#	--target-host=$MILLAU_HOST\
-#	--target-port=$MILLAU_PORT\
-#	--target-signer=//Ferdie\
-#	--prometheus-port=9703\
-#	--lane=00000000"&
+fi
 
 ###############################################################################
 ### The rest is not executed if Westend -> Millau bridge is disabled ##########
