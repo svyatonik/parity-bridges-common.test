@@ -66,6 +66,9 @@ sed -i 's/{TARGET_NAME}/Millau/g' data/dashboards/relay-westend2millau-dashboard
 sed -i 's/{BRIDGE_ID}/relay-westend2millau/g' data/dashboards/relay-westend2millau-dashboard.json
 sed -i 's/{BRIDGE_NAME}/westend2millau/g' data/dashboards/relay-westend2millau-dashboard.json
 
+# prepare maintenance dashboard
+cp -rf dashboards/maintenance-dashboard.json data/dashboards/maintenance-dashboard.json
+
 # run prometheus (http://127.0.0.1:9090/)
 docker container rm relay-prometheus | true
 docker run \
@@ -82,6 +85,7 @@ docker run \
 	--network=host \
 	-v `realpath data/dashboards/grafana-datasource.yaml`:/etc/grafana/provisioning/datasources/grafana-datasource.yaml \
 	-v `realpath data/dashboards/grafana-dashboard.yaml`:/etc/grafana/provisioning/dashboards/grafana-dashboard.yaml \
+	-v `realpath data/dashboards/maintenance-dashboard.json`:/etc/grafana/provisioning/dashboards/maintenance-dashboard.json \
 	-v `realpath data/dashboards/relay-eth2sub-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-dashboard.json \
 	-v `realpath data/dashboards/relay-sub2eth-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-sub2eth-dashboard.json \
 	-v `realpath data/dashboards/relay-eth2sub-exchange-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-eth2sub-exchange-dashboard.json \

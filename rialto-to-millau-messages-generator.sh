@@ -28,7 +28,7 @@ MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=1024
 # submit Rialto to Millau message
 submit_message() {
 	MESSAGE_PARAMS="$*"
-	$RELAY_BINARY_PATH 2>&1 send-message rialto-to-millau \
+	$RELAY_BINARY_PATH 2>&1 send-message RialtoToMillau \
 		--source-host=$RIALTO_HOST\
 		--source-port=$RIALTO_PORT\
 		--source-signer=$RIALTO_SIGNER\
