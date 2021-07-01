@@ -28,13 +28,39 @@ MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE=128
 # submit Millau to Rialto message
 submit_message() {
 	MESSAGE_PARAMS="$*"
-	$RELAY_BINARY_PATH 2>&1 send-message MillauToRialto \
+	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
 		--source-host=$MILLAU_HOST\
 		--source-port=$MILLAU_PORT\
 		--source-signer=$MILLAU_SIGNER\
 		--target-signer=$RIALTO_SIGNER\
 		--lane=$LANE\
 		--origin Target \
+		$MESSAGE_PARAMS
+}
+
+# submit Millau to Rialto message to lane#1
+submit_message_at_lane_1() {
+	MESSAGE_PARAMS="$*"
+	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
+		--source-host=$MILLAU_HOST\
+		--source-port=$MILLAU_PORT\
+		--source-signer=$MILLAU_SIGNER\
+		--target-signer=$RIALTO_SIGNER\
+		--lane=00000001\
+		--origin Target\
+		$MESSAGE_PARAMS
+}
+
+# submit Millau to Rialto message to lane#2
+submit_message_at_lane_1() {
+	MESSAGE_PARAMS="$*"
+	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
+		--source-host=$MILLAU_HOST\
+		--source-port=$MILLAU_PORT\
+		--source-signer=$MILLAU_SIGNER\
+		--target-signer=$RIALTO_SIGNER\
+		--lane=00000002\
+		--origin Target\
 		$MESSAGE_PARAMS
 }
 
@@ -52,6 +78,8 @@ do
 	# submit message
 	echo "Sending message from Millau to Rialto"
 	submit_message $MESSAGE
+	submit_message_at_lane_1 $MESSAGE
+	submit_message_at_lane_2 $MESSAGE
 
 	if [ ! -z "$GENERATE_LARGE_MESSAGES" ]; then
 

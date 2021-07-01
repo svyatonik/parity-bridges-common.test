@@ -59,6 +59,38 @@ sed -i 's/{LANE_ID}/00000000/g' data/dashboards/relay-rialto2millau-messages-000
 sed -i 's/{BRIDGE_ID}/relay-rialto2millau-messages-00000000/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
 sed -i 's/{BRIDGE_NAME}/rialto2millau-messages-00000000/g' data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json
 
+# prepare Millau -> Rialto messages relay dashboard (lane 00000001)
+cp -rf dashboards/relay-messages-dashboard.json data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+sed -i 's/{SOURCE_NAME}/Millau/g' data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+sed -i 's/{TARGET_NAME}/Rialto/g' data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+sed -i 's/{LANE_ID}/00000001/g' data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+sed -i 's/{BRIDGE_ID}/relay-millau2rialto-messages-00000001/g' data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+sed -i 's/{BRIDGE_NAME}/millau2rialto-messages-00000001/g' data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json
+
+# prepare Rialto -> Millau messages relay dashboard (lane 00000001)
+cp -rf dashboards/relay-messages-dashboard.json data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+sed -i 's/{SOURCE_NAME}/Rialto/g' data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+sed -i 's/{TARGET_NAME}/Millau/g' data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+sed -i 's/{LANE_ID}/00000001/g' data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+sed -i 's/{BRIDGE_ID}/relay-rialto2millau-messages-00000001/g' data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+sed -i 's/{BRIDGE_NAME}/rialto2millau-messages-00000001/g' data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json
+
+# prepare Millau -> Rialto messages relay dashboard (lane 00000002)
+cp -rf dashboards/relay-messages-dashboard.json data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+sed -i 's/{SOURCE_NAME}/Millau/g' data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+sed -i 's/{TARGET_NAME}/Rialto/g' data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+sed -i 's/{LANE_ID}/00000002/g' data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+sed -i 's/{BRIDGE_ID}/relay-millau2rialto-messages-00000002/g' data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+sed -i 's/{BRIDGE_NAME}/millau2rialto-messages-00000002/g' data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json
+
+# prepare Rialto -> Millau messages relay dashboard (lane 00000002)
+cp -rf dashboards/relay-messages-dashboard.json data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+sed -i 's/{SOURCE_NAME}/Rialto/g' data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+sed -i 's/{TARGET_NAME}/Millau/g' data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+sed -i 's/{LANE_ID}/00000002/g' data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+sed -i 's/{BRIDGE_ID}/relay-rialto2millau-messages-00000002/g' data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+sed -i 's/{BRIDGE_NAME}/rialto2millau-messages-00000002/g' data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json
+
 # prepare Westend -> Millau headers relay dashboard
 cp -rf dashboards/relay-headers-dashboard.json data/dashboards/relay-westend2millau-dashboard.json
 sed -i 's/{SOURCE_NAME}/Westend/g' data/dashboards/relay-westend2millau-dashboard.json
@@ -94,4 +126,8 @@ docker run \
 	-v `realpath data/dashboards/relay-westend2millau-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-westend2millau-dashboard.json \
 	-v `realpath data/dashboards/relay-millau2rialto-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-messages-00000000-dashboard.json \
 	-v `realpath data/dashboards/relay-rialto2millau-messages-00000000-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-messages-00000000-dashboard.json \
+	-v `realpath data/dashboards/relay-millau2rialto-messages-00000001-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-messages-00000001-dashboard.json \
+	-v `realpath data/dashboards/relay-rialto2millau-messages-00000001-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-messages-00000001-dashboard.json \
+	-v `realpath data/dashboards/relay-millau2rialto-messages-00000002-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-millau2rialto-messages-00000002-dashboard.json \
+	-v `realpath data/dashboards/relay-rialto2millau-messages-00000002-dashboard.json`:/etc/grafana/provisioning/dashboards/relay-rialto2millau-messages-00000002-dashboard.json \
 	grafana/grafana&
