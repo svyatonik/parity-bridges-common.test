@@ -52,7 +52,7 @@ submit_message_at_lane_1() {
 }
 
 # submit Millau to Rialto message to lane#2
-submit_message_at_lane_1() {
+submit_message_at_lane_2() {
 	MESSAGE_PARAMS="$*"
 	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
 		--source-host=$MILLAU_HOST\
