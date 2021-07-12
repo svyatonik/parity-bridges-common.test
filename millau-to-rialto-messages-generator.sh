@@ -48,19 +48,19 @@ submit_message_at_lane_1() {
 		--target-signer=$RIALTO_SIGNER\
 		--lane=00000001\
 		--origin Target\
+		--dispatch-fee-payment=at-target-chain\
+		--dispatch-weight=max\
 		$MESSAGE_PARAMS
-}
 
-# submit Millau to Rialto message to lane#2
-submit_message_at_lane_2() {
-	MESSAGE_PARAMS="$*"
 	$RELAY_BINARY_PATH 2>&1 send-message millau-to-rialto \
 		--source-host=$MILLAU_HOST\
 		--source-port=$MILLAU_PORT\
 		--source-signer=$MILLAU_SIGNER\
 		--target-signer=$RIALTO_SIGNER\
-		--lane=00000002\
+		--lane=00000001\
 		--origin Target\
+		--dispatch-fee-payment=at-source-chain\
+		--dispatch-weight=max\
 		$MESSAGE_PARAMS
 }
 
@@ -79,7 +79,6 @@ do
 	echo "Sending message from Millau to Rialto"
 	submit_message $MESSAGE
 	submit_message_at_lane_1 $MESSAGE
-	submit_message_at_lane_2 $MESSAGE
 
 	if [ ! -z "$GENERATE_LARGE_MESSAGES" ]; then
 
