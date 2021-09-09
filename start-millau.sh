@@ -9,7 +9,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace
+RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace,txpool=trace,sc_basic_authorship=trace
 export RUST_LOG
 
 # remove Millau databases
@@ -141,6 +141,13 @@ sleep 10
 	rialto-to-millau-messages-generator\
 	./rialto-to-millau-messages-generator.sh&
 
+# start millau transactions resubmitter
+./run-with-log.sh millau-to-rialto-messages-resubmitter "$RELAY_BINARY_PATH\
+	resubmit-transactions millau\
+	--target-host=$MILLAU_HOST\
+	--target-port=10946\
+	--target-signer=//Dave"&
+
 ###############################################################################
 ### Starting Millau -> Rialto relays ##########################################
 ###############################################################################
@@ -204,7 +211,9 @@ else
 	--rialto-signer=//Charlie\
 	--lane=00000000\
 	--lane=00000001\
-	--prometheus-port=9700"&
+	--prometheus-port=9700\
+	--millau-messages-pallet-owner=//RialtoMessagesOwner\
+	--rialto-messages-pallet-owner=//MillauMessagesOwner"&
 
 # start rialto-to-millau messages relay for lane#2
 ./run-with-log.sh relay-rialto-to-millau-messages-00000002 "$RELAY_BINARY_PATH\
@@ -265,5 +274,6 @@ sleep 20
 	--target-port=$MILLAU_PORT\
 	--target-signer=//George\
 	--prometheus-port=9704"&
+#	--target-transactions-mortality=4\
 
 fi

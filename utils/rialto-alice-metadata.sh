@@ -1,0 +1,2 @@
+#!/bin/bash
+curl --location --request POST 'http://localhost:9933' --header 'Content-Type: application/json' --data-raw '{"jsonrpc": "2.0", "method": "state_getMetadata", "params": [], "id": 1}' 2>/dev/null

@@ -64,6 +64,9 @@ submit_message_at_lane_1() {
 		$MESSAGE_PARAMS
 }
 
+# give conversion rate updater some time to update Millau->Rialto conversion rate in Rialto
+sleep 90
+
 BATCH_TIME=0
 while true
 do
@@ -71,6 +74,7 @@ do
 	SUBMIT_DELAY_S=`shuf -i 0-$MAX_SUBMIT_DELAY_S -n 1`
 	echo "Sleeping $SUBMIT_DELAY_S seconds..."
 	sleep $SUBMIT_DELAY_S
+	date "+%Y-%m-%d %H:%M:%S"
 
 	# prepare message to send
 	MESSAGE="remark --remark-payload=01234567"
