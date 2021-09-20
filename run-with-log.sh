@@ -4,4 +4,6 @@
 GAWK_SCRIPT="{ print \"$1: \", \$0 }"
 unbuffer $2 2>&1 | \
 	unbuffer -p gawk "$GAWK_SCRIPT" | \
+# Remove colors:
+#	sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' |
 	unbuffer -p tee logs/$1.log

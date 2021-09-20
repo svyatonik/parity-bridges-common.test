@@ -19,6 +19,8 @@ rm -rf data/millau-charlie.db
 rm -rf data/millau-dave.db
 rm -rf data/millau-eve.db
 
+if [ -z "$DISABLE_MILLAU" ]; then
+
 # start Millau nodes
 ./run-with-log.sh millau-alice "./bin/millau-bridge-node\
 	--alice\
@@ -275,5 +277,8 @@ sleep 20
 	--target-signer=//George\
 	--prometheus-port=9704"&
 #	--target-transactions-mortality=4\
+
+fi
+
 
 fi

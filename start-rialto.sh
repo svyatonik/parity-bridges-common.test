@@ -7,7 +7,7 @@
 ### Rialto (Substrate) chain startup ##########################################
 ###############################################################################
 
-RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace
+RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace,parachain=trace
 export RUST_LOG
 
 # remove Rialto databases
@@ -16,6 +16,8 @@ rm -rf data/rialto-bob.db
 rm -rf data/rialto-charlie.db
 rm -rf data/rialto-dave.db
 rm -rf data/rialto-eve.db
+
+if [ -z "$DISABLE_RIALTO" ]; then
 
 # start Rialto nodes
 ./run-with-log.sh rialto-alice "./bin/rialto-bridge-node\
@@ -215,5 +217,7 @@ sleep 20
 	--eth-contract c9a61fb29e971d1dabfd98657969882ef5d0beee\
 	--eth-signer 0399dbd15cf6ee8250895a1f3873eb1e10e23ca18e8ed0726c63c4aea356e87d\
 	--prometheus-port=9653"&
+
+fi
 
 fi
