@@ -3,9 +3,9 @@
 . ./build-rialto-parachain-collator.sh
 
 # remove rialto databases
-#rm -rf data/rialto-parachain-alice.db
-#rm -rf data/rialto-parachain-bob.db
-#rm -rf data/rialto-parachain-charlie.db
+rm -rf data/rialto-parachain-alice.db
+rm -rf data/rialto-parachain-bob.db
+rm -rf data/rialto-parachain-charlie.db
 
 if [ -z "$DISABLE_RIALTO_PARACHAIN" ]; then
 
@@ -23,9 +23,8 @@ $RIALTO_PARACHAIN_COLLATOR_BINARY_PATH export-genesis-wasm > ./data/rialto-parac
 ### chain spec.                                                            ####
 ###############################################################################
 
-#./bin/rialto-bridge-node build-spec --chain local --raw --disable-default-bootnode > ./data/rialto-relaychain-spec-raw.json
-#CHAIN=./data/rialto-relaychain-spec-raw.json
-CHAIN=rococo
+./bin/rialto-bridge-node build-spec --chain local --raw --disable-default-bootnode > ./data/rialto-relaychain-spec-raw.json
+CHAIN=./data/rialto-relaychain-spec-raw.json
 
 ###############################################################################
 ### Start parachain node ######################################################
@@ -45,7 +44,7 @@ export RUST_LOG
 	--rpc-port=11933 \
 	-- \
 	--execution wasm \
-	--chain ./data/rialto-relaychain-spec-raw.json \
+	--chain $CHAIN \
 	--port 30500 \
 	--ws-port 12000"&
 
@@ -60,7 +59,7 @@ export RUST_LOG
 	--rpc-port=11934 \
 	-- \
 	--execution wasm \
-	--chain ./data/rialto-relaychain-spec-raw.json \
+	--chain $CHAIN \
 	--port 30501 \
 	--ws-port 12001"&
 
@@ -75,7 +74,7 @@ export RUST_LOG
 	--rpc-port=11935 \
 	-- \
 	--execution wasm \
-	--chain ./data/rialto-relaychain-spec-raw.json \
+	--chain $CHAIN \
 	--port 30502 \
 	--ws-port 12002"&
 
