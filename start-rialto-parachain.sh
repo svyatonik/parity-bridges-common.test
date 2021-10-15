@@ -30,7 +30,7 @@ CHAIN=./data/rialto-relaychain-spec-raw.json
 ### Start parachain node ######################################################
 ###############################################################################
 
-RUST_LOG=parachain=trace
+RUST_LOG=parachain=trace,rpc=trace
 export RUST_LOG
 
 ./run-with-log.sh rialto-parachain-collator-alice "$RIALTO_PARACHAIN_COLLATOR_BINARY_PATH \
@@ -78,7 +78,21 @@ export RUST_LOG
 	--port 30502 \
 	--ws-port 12002"&
 
-# manual actions:
+###############################################################################
+### Register Rialto parachain #################################################
+###############################################################################
+
+RUST_LOG=bridge=trace
+export RUST_LOG
+
+./run-with-log.sh rialto-parachain-registrator "./bin/substrate-relay register-parachain rialto-parachain \
+	--parachain-host 127.0.0.1 \
+	--parachain-port 11949 \
+	--relaychain-host 127.0.0.1 \
+	--relaychain-port 9944 \
+	--relaychain-signer //Alice"&
+
+# or manual actions:
 # 1) https://polkadot.js.org/apps/#/ and connect to Rialto node (ws://127.0.0.1:9944)
 # 2) reserve parachain id #2000:
 #    network/parachains/parathreads/+ParaId

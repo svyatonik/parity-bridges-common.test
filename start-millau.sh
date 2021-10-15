@@ -143,6 +143,11 @@ sleep 10
 	rialto-to-millau-messages-generator\
 	./rialto-to-millau-messages-generator.sh&
 
+# start generating tokens swap
+./run-with-log.sh \
+	token-swap-generator\
+	./token-swap-generator.sh&
+
 # start millau transactions resubmitter
 ./run-with-log.sh millau-to-rialto-messages-resubmitter "$RELAY_BINARY_PATH\
 	resubmit-transactions millau\
@@ -213,6 +218,7 @@ else
 	--rialto-signer=//Charlie\
 	--lane=00000000\
 	--lane=00000001\
+	--lane=73776170\
 	--prometheus-port=9700\
 	--millau-messages-pallet-owner=//RialtoMessagesOwner\
 	--rialto-messages-pallet-owner=//MillauMessagesOwner"&
@@ -230,16 +236,16 @@ else
 	--lane=00000002"&
 
 # start millau-to-rialto messages relay for lane#2
-./run-with-log.sh relay-millau-to-rialto-messages-00000002 "$RELAY_BINARY_PATH\
-	relay-messages millau-to-rialto\
-	--source-host=$MILLAU_HOST\
-	--source-port=$MILLAU_PORT\
-	--source-signer=//Ferdie\
-	--target-host=$RIALTO_HOST\
-	--target-port=$RIALTO_PORT\
-	--target-signer=//Ferdie\
-	--prometheus-port=9702\
-	--lane=00000002"&
+	./run-with-log.sh relay-millau-to-rialto-messages-00000002 "$RELAY_BINARY_PATH\
+		relay-messages millau-to-rialto\
+		--source-host=$MILLAU_HOST\
+		--source-port=$MILLAU_PORT\
+		--source-signer=//Ferdie\
+		--target-host=$RIALTO_HOST\
+		--target-port=$RIALTO_PORT\
+		--target-signer=//Ferdie\
+		--prometheus-port=9702\
+		--lane=00000002"&
 
 fi
 
