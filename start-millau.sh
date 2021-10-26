@@ -213,9 +213,11 @@ else
 	--millau-host=$MILLAU_HOST\
 	--millau-port=$MILLAU_PORT\
 	--millau-signer=//Charlie\
+	--millau-transactions-mortality=64\
 	--rialto-host=$RIALTO_HOST\
 	--rialto-port=$RIALTO_PORT\
 	--rialto-signer=//Charlie\
+	--rialto-transactions-mortality=64\
 	--lane=00000000\
 	--lane=00000001\
 	--lane=73776170\
