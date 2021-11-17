@@ -238,16 +238,16 @@ else
 	--lane=00000002"&
 
 # start millau-to-rialto messages relay for lane#2
-	./run-with-log.sh relay-millau-to-rialto-messages-00000002 "$RELAY_BINARY_PATH\
-		relay-messages millau-to-rialto\
-		--source-host=$MILLAU_HOST\
-		--source-port=$MILLAU_PORT\
-		--source-signer=//Ferdie\
-		--target-host=$RIALTO_HOST\
-		--target-port=$RIALTO_PORT\
-		--target-signer=//Ferdie\
-		--prometheus-port=9702\
-		--lane=00000002"&
+./run-with-log.sh relay-millau-to-rialto-messages-00000002 "$RELAY_BINARY_PATH\
+	relay-messages millau-to-rialto\
+	--source-host=$MILLAU_HOST\
+	--source-port=$MILLAU_PORT\
+	--source-signer=//Ferdie\
+	--target-host=$RIALTO_HOST\
+	--target-port=$RIALTO_PORT\
+	--target-signer=//Ferdie\
+	--prometheus-port=9702\
+	--lane=00000002"&
 
 fi
 

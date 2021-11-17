@@ -1,33 +1,5 @@
 scrape_configs:
-  - job_name: 'poa2rialto_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9650']
-  - job_name: 'poa2rialto_exchange_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9651']
-  - job_name: 'rialto2poa_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9653']
-  - job_name: 'millau2rialto_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9700']
-  - job_name: 'rialto2millau_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9701']
-  - job_name: 'westend2millau_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9704']
-  - job_name: 'millau2rialto_00000000_lane_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9702']
-  - job_name: 'rialto2millau_00000000_lane_relay'
-    scrape_interval: 15s
-    static_configs:
-      - targets: ['127.0.0.1:9703']
+  - job_name: 'dummy'
+    file_sd_configs:
+      - files:
+        - prometheus-targets*.yml

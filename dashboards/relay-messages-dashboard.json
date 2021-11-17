@@ -64,7 +64,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_best_block_numbers{type=~\"target|target_at_source\"}, \"type\", \"At {TARGET_NAME}\", \"type\", \"target\"), \"type\", \"At {SOURCE_NAME}\", \"type\", \"target_at_source\")",
+			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_best_block_numbers{job='{JOB_NAME}', type=~\"target|target_at_source\"}, \"type\", \"At {TARGET_NAME}\", \"type\", \"target\"), \"type\", \"At {SOURCE_NAME}\", \"type\", \"target_at_source\")",
 			"instant": false,
 			"interval": "",
 			"legendFormat": "{{type}}",
@@ -159,7 +159,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_best_block_numbers{type=~\"source|source_at_target\"}, \"type\", \"At {SOURCE_NAME}\", \"type\", \"source\"), \"type\", \"At {TARGET_NAME}\", \"type\", \"source_at_target\")",
+			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_best_block_numbers{job='{JOB_NAME}', type=~\"source|source_at_target\"}, \"type\", \"At {SOURCE_NAME}\", \"type\", \"source\"), \"type\", \"At {TARGET_NAME}\", \"type\", \"source_at_target\")",
 			"interval": "",
 			"legendFormat": "{{type}}",
 			"refId": "A"
@@ -288,13 +288,13 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=~\"source_latest_generated|target_latest_received\"}, \"type\", \"Latest message sent from {SOURCE_NAME}\", \"type\", \"source_latest_generated\"), \"type\", \"Latest message received by {TARGET_NAME}\", \"type\", \"target_latest_received\")",
+			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=~\"source_latest_generated|target_latest_received\"}, \"type\", \"Latest message sent from {SOURCE_NAME}\", \"type\", \"source_latest_generated\"), \"type\", \"Latest message received by {TARGET_NAME}\", \"type\", \"target_latest_received\")",
 			"interval": "",
 			"legendFormat": "{{type}}",
 			"refId": "A"
 			},
 			{
-				"expr": "max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_generated\"}[5m]) - min_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_generated\"}[5m])",
+				"expr": "max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_generated\"}[5m]) - min_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_generated\"}[5m])",
 				"hide": true,
 				"interval": "",
 				"legendFormat": "Messages generated in last 5 minutes",
@@ -389,7 +389,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=~\"source_latest_confirmed|target_latest_received\"}, \"type\", \"Latest message confirmed by {TARGET_NAME} to {SOURCE_NAME}\", \"type\", \"source_latest_confirmed\"), \"type\", \"Latest message received by {SOURCE_NAME}\", \"type\", \"target_latest_received\")",
+			"expr": "label_replace(label_replace({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=~\"source_latest_confirmed|target_latest_received\"}, \"type\", \"Latest message confirmed by {TARGET_NAME} to {SOURCE_NAME}\", \"type\", \"source_latest_confirmed\"), \"type\", \"Latest message received by {SOURCE_NAME}\", \"type\", \"target_latest_received\")",
 			"interval": "",
 			"legendFormat": "{{type}}",
 			"refId": "A"
@@ -518,7 +518,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_generated\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m]))",
+          "expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_generated\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_received\"}[2m]))",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -526,7 +526,7 @@
           "refId": "A"
         },
         {
-          "expr": "increase({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[1m])",
+          "expr": "increase({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_received\"}[1m])",
           "interval": "",
           "legendFormat": "Messages delivered to {TARGET_NAME} in last 1m",
           "refId": "B"
@@ -663,7 +663,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m]))",
+			"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_received\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_confirmed\"}[2m]))",
 			"interval": "",
 			"legendFormat": "Unconfirmed messages at {SOURCE_NAME}",
 			"refId": "A"
@@ -800,13 +800,13 @@
 			"steppedLine": false,
 			"targets": [
 				{
-					"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_confirmed\"}[2m]))",
+					"expr": "scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_confirmed\"}[2m]))",
 					"interval": "",
 					"legendFormat": "Unconfirmed rewards at {TARGET_NAME}",
 					"refId": "A"
 				},
 				{
-					"expr": "(scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_confirmed\"}[2m]))) * (max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m]) > bool min_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{type=\"target_latest_received\"}[2m]))",
+					"expr": "(scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"source_latest_confirmed\"}[2m])) - scalar(max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_confirmed\"}[2m]))) * (max_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_received\"}[2m]) > bool min_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_lane_state_nonces{job='{JOB_NAME}', type=\"target_latest_received\"}[2m]))",
 					"interval": "",
 					"legendFormat": "Unconfirmed rewards at {TARGET_NAME} (zero if no messages are not being delivered)",
 					"refId": "B"
@@ -905,7 +905,7 @@
 		"pluginVersion": "7.0.6",
 		"targets": [
 		  {
-			"expr": "avg_over_time({SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_process_cpu_usage_percentage[1m])",
+			"expr": "avg_over_time(process_cpu_usage_percentage{job='{JOB_NAME}'}[1m])",
 			"instant": true,
 			"interval": "",
 			"legendFormat": "1 CPU = 100",
@@ -964,7 +964,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "{SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_system_average_load",
+			"expr": "system_average_load{job='{JOB_NAME}'}",
 			"interval": "",
 			"legendFormat": "Average system load in last {{over}}",
 			"refId": "A"
@@ -1058,7 +1058,7 @@
 		"steppedLine": false,
 		"targets": [
 		  {
-			"expr": "{SOURCE_NAME}_to_{TARGET_NAME}_MessageLane_{LANE_ID}_process_memory_usage_bytes / 1024 / 1024",
+			"expr": "process_memory_usage_bytes{job='{JOB_NAME}'} / 1024 / 1024",
 			"interval": "",
 			"legendFormat": "Process memory, MB",
 			"refId": "A"

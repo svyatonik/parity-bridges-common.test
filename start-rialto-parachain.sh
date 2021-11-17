@@ -92,6 +92,17 @@ export RUST_LOG
 	--relaychain-port 9944 \
 	--relaychain-signer //Alice"&
 
+###############################################################################
+### Start Rialto -> Millau parachains relay ###################################
+###############################################################################
+
+./run-with-log.sh rialto-to-millau-parachain-relay "./bin/substrate-relay relay-parachains rialto-to-millau \
+	--source-host 127.0.0.1 \
+	--source-port 9944 \
+	--target-host 127.0.0.1 \
+	--target-port 10944 \
+	--target-signer //George"&
+
 # or manual actions:
 # 1) https://polkadot.js.org/apps/#/ and connect to Rialto node (ws://127.0.0.1:9944)
 # 2) reserve parachain id #2000:

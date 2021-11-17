@@ -50,7 +50,7 @@
         "frequency": "5m",
         "handler": 1,
         "message": "",
-        "name": "{SOURCE_NAME} Block Difference > 5 ({BRIDGE_NAME})",
+        "name": "{SOURCE_NAME} Block Difference > 5 ({JOB_NAME})",
         "noDataState": "no_data",
         "notifications": []
       },
@@ -202,7 +202,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "{SOURCE_NAME}_to_{TARGET_NAME}_Sync_system_average_load",
+          "expr": "system_average_load{job='{JOB_NAME}'}",
           "interval": "",
           "legendFormat": "Average system load in last {{over}}",
           "refId": "A"
@@ -301,7 +301,7 @@
       "pluginVersion": "7.1.0",
       "targets": [
         {
-          "expr": "avg_over_time({SOURCE_NAME}_to_{TARGET_NAME}_Sync_process_cpu_usage_percentage[1m])",
+          "expr": "avg_over_time(process_cpu_usage_percentage{job='{JOB_NAME}'}[1m])",
           "instant": true,
           "interval": "",
           "legendFormat": "",
@@ -422,7 +422,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "{SOURCE_NAME}_to_{TARGET_NAME}_Sync_process_memory_usage_bytes / 1024 / 1024",
+          "expr": "process_memory_usage_bytes{job='{JOB_NAME}'} / 1024 / 1024",
           "interval": "",
           "legendFormat": "Process memory, MB",
           "refId": "A"
@@ -557,7 +557,7 @@
         "for": "3m",
         "frequency": "5m",
         "handler": 1,
-        "name": "No New Blocks ({BRIDGE_NAME})",
+        "name": "No New Blocks ({JOB_NAME})",
         "noDataState": "no_data",
         "notifications": []
       },

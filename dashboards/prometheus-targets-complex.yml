@@ -1,0 +1,45 @@
+# PoA <> Rialto targets
+- targets: ['127.0.0.1:9650']
+  labels:
+    job: 'poa2rialto_relay'
+- targets: ['127.0.0.1:9651']
+  labels:
+    job: 'poa2rialto_exchange_relay'
+- targets: ['127.0.0.1:9653']
+  labels:
+    job: 'rialto2poa_relay'
+# Rialto <> Millau targets
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'millau2rialto_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'rialto2millau_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'millau2rialto_00000000_lane_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'rialto2millau_00000000_lane_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'millau2rialto_00000001_lane_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'rialto2millau_00000001_lane_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'millau2rialto_73776170_lane_relay'
+- targets: ['127.0.0.1:9700']
+  labels:
+    job: 'rialto2millau_73776170_lane_relay'
+- targets: ['127.0.0.1:9702']
+  labels:
+    job: 'millau2rialto_00000002_lane_relay'
+- targets: ['127.0.0.1:9701']
+  labels:
+    job: 'rialto2millau_00000002_lane_relay'
+# Westend > Millau targets
+- targets: ['127.0.0.1:9704']
+  labels:
+    job: 'westend2millau_relay'
