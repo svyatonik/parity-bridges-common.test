@@ -153,7 +153,9 @@ sleep 10
 	resubmit-transactions millau\
 	--target-host=$MILLAU_HOST\
 	--target-port=10946\
-	--target-signer=//Dave"&
+	--target-signer=//Dave\
+	--tip-limit 1000000000000\
+	--tip-step 1000000000"&
 
 ###############################################################################
 ### Starting Millau -> Rialto relays ##########################################
