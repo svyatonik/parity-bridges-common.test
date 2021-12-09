@@ -103,6 +103,40 @@ export RUST_LOG
 	--target-port 10944 \
 	--target-signer //George"&
 
+###############################################################################
+### Start generating messages on Millau <> RialtoParachain lanes ##############
+###############################################################################
+
+# start generating Millau -> RialtoParachain messages
+./run-with-log.sh \
+	millau-to-rialto-parachain-messages-generator\
+	./millau-to-rialto-parachain-messages-generator.sh&
+
+# start generating RialtoParachain -> Millau messages
+./run-with-log.sh \
+	rialto-parachain-to-millau-messages-generator\
+	./rialto-parachain-to-millau-messages-generator.sh&
+
+###############################################################################
+### Start RialtoParachain <-> Millau messages relays ##########################
+###############################################################################
+
+#./run-with-log.sh relay-rialto-parachain-to-millau-messages "./bin/substrate-relay relay-messages rialto-parachain-to-millau \
+#	--source-host 127.0.0.1 \
+#	--source-port 11949 \
+#	--target-host 127.0.0.1 \
+#	--target-port 10944 \
+#	--target-signer //Harry"&
+
+./run-with-log.sh relay-millau-to-rialto-parachain-messages "./bin/substrate-relay relay-messages millau-to-rialto-parachain \
+	--relayer-mode=altruistic \
+	--source-host 127.0.0.1 \
+	--source-port 10944 \
+	--source-signer //Harry \
+	--target-host 127.0.0.1 \
+	--target-port 11949 \
+	--target-signer //Harry"&
+
 # or manual actions:
 # 1) https://polkadot.js.org/apps/#/ and connect to Rialto node (ws://127.0.0.1:9944)
 # 2) reserve parachain id #2000:
