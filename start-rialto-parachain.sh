@@ -30,11 +30,12 @@ CHAIN=./data/rialto-relaychain-spec-raw.json
 ### Start parachain node ######################################################
 ###############################################################################
 
-RUST_LOG=parachain=trace,rpc=trace
+RUST_LOG=runtime::bridge=trace,parachain=trace,rpc=trace,txpool=trace,sc_basic_authorship=trace
 export RUST_LOG
 
 ./run-with-log.sh rialto-parachain-collator-alice "$RIALTO_PARACHAIN_COLLATOR_BINARY_PATH \
 	--alice \
+	--chain local\
 	--collator \
 	--force-authoring \
 	--parachain-id 2000 \
@@ -50,6 +51,7 @@ export RUST_LOG
 
 ./run-with-log.sh rialto-parachain-collator-bob "$RIALTO_PARACHAIN_COLLATOR_BINARY_PATH \
 	--bob \
+	--chain local\
 	--collator \
 	--force-authoring \
 	--parachain-id 2000 \
@@ -104,6 +106,27 @@ export RUST_LOG
 	--target-signer //George"&
 
 ###############################################################################
+### Start Millau -> Rialto headers relay ######################################
+###############################################################################
+
+./run-with-log.sh initialize-millau-to-rialto-parachain-relay "./bin/substrate-relay\
+	init-bridge millau-to-rialto-parachain\
+	--source-host=127.0.0.1\
+	--source-port=10944\
+	--target-host=127.0.0.1\
+	--target-port=11949\
+	--target-signer=//Alice"&
+
+sleep 5
+
+./run-with-log.sh millau-to-rialto-parachain-relay "./bin/substrate-relay relay-headers millau-to-rialto-parachain \
+	--source-host 127.0.0.1 \
+	--source-port 10944 \
+	--target-host 127.0.0.1 \
+	--target-port 11949 \
+	--target-signer //Alice"&
+
+###############################################################################
 ### Start generating messages on Millau <> RialtoParachain lanes ##############
 ###############################################################################
 
@@ -121,12 +144,14 @@ export RUST_LOG
 ### Start RialtoParachain <-> Millau messages relays ##########################
 ###############################################################################
 
-#./run-with-log.sh relay-rialto-parachain-to-millau-messages "./bin/substrate-relay relay-messages rialto-parachain-to-millau \
-#	--source-host 127.0.0.1 \
-#	--source-port 11949 \
-#	--target-host 127.0.0.1 \
-#	--target-port 10944 \
-#	--target-signer //Harry"&
+./run-with-log.sh relay-rialto-parachain-to-millau-messages "./bin/substrate-relay relay-messages rialto-parachain-to-millau \
+	--relayer-mode=altruistic \
+	--source-host 127.0.0.1 \
+	--source-port 11949 \
+	--source-signer //Charlie \
+	--target-host 127.0.0.1 \
+	--target-port 10944 \
+	--target-signer //Ferdie"&
 
 ./run-with-log.sh relay-millau-to-rialto-parachain-messages "./bin/substrate-relay relay-messages millau-to-rialto-parachain \
 	--relayer-mode=altruistic \
@@ -135,7 +160,7 @@ export RUST_LOG
 	--source-signer //Harry \
 	--target-host 127.0.0.1 \
 	--target-port 11949 \
-	--target-signer //Harry"&
+	--target-signer //Bob"&
 
 # or manual actions:
 # 1) https://polkadot.js.org/apps/#/ and connect to Rialto node (ws://127.0.0.1:9944)

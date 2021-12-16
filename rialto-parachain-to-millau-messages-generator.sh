@@ -15,7 +15,7 @@ RIALTO_PARACHAIN_HOST=127.0.0.1
 # RialtoParachain node port
 RIALTO_PARACHAIN_PORT=11949
 # RialtoParachain signer
-RIALTO_PARACHAIN_SIGNER=//Dave
+RIALTO_PARACHAIN_SIGNER=//Charlie
 # Millau signer
 MILLAU_SIGNER=//Alice
 # Max delay before submitting transactions (s)
