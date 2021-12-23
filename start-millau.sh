@@ -1,7 +1,5 @@
 #!/bin/bash
 . ./prelude.sh
-. ./build-millau-node.sh
-. ./build-substrate-relay.sh
 
 ###############################################################################
 ### Millau (Substrate) chain startup ##########################################
@@ -9,7 +7,7 @@
 
 # TODO: Millau should use other authorities && other session management
 
-RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace,txpool=trace,sc_basic_authorship=trace
+RUST_LOG=runtime=trace,runtime::bridge=trace,txpool=trace,sc_basic_authorship=trace
 export RUST_LOG
 
 # remove Millau databases
@@ -127,7 +125,27 @@ export MILLAU_HOST MILLAU_PORT RIALTO_HOST RIALTO_PORT RELAY_BINARY_PATH RUST_LO
 	--target-signer=//Alice"&
 
 # wait until transactions are mined
-sleep 10
+sleep 20
+
+# just to test that second initialization transaction is not sent
+
+# initialize Millau -> Rialto headers bridge
+./run-with-log.sh initialize-millau-to-rialto-2 "$RELAY_BINARY_PATH\
+	init-bridge millau-to-rialto\
+	--source-host=$MILLAU_HOST\
+	--source-port=$MILLAU_PORT\
+	--target-host=$RIALTO_HOST\
+	--target-port=$RIALTO_PORT\
+	--target-signer=//Alice"&
+
+# initialize Rialto -> Millau headers bridge
+./run-with-log.sh initialize-rialto-to-millau-2 "$RELAY_BINARY_PATH\
+	init-bridge rialto-to-millau\
+	--source-host=$RIALTO_HOST\
+	--source-port=$RIALTO_PORT\
+	--target-host=$MILLAU_HOST\
+	--target-port=$MILLAU_PORT\
+	--target-signer=//Alice"&
 
 ###############################################################################
 ### Start generating messages on Millau <-> Rialto lanes ######################

@@ -1,11 +1,10 @@
 #!/bin/bash
 . ./prelude.sh
-. ./build-rialto-parachain-collator.sh
 
 # remove rialto databases
-#rm -rf data/rialto-parachain-alice.db
-#rm -rf data/rialto-parachain-bob.db
-#rm -rf data/rialto-parachain-charlie.db
+rm -rf data/rialto-parachain-alice.db
+rm -rf data/rialto-parachain-bob.db
+rm -rf data/rialto-parachain-charlie.db
 
 if [ -z "$DISABLE_RIALTO_PARACHAIN" ]; then
 

@@ -1,13 +1,11 @@
 #!/bin/bash
 . ./prelude.sh
-. ./build-rialto-node.sh
-. ./build-ethereum-relay.sh
 
 ###############################################################################
 ### Rialto (Substrate) chain startup ##########################################
 ###############################################################################
 
-RUST_LOG=runtime=trace,runtime::bridge=trace,pallet_bridge_messages_rpc=trace,parachain=trace
+RUST_LOG=runtime=trace,runtime::bridge=trace,txpool=trace,parachain=trace,gossip=trace,beefy=trace
 export RUST_LOG
 
 # remove Rialto databases
