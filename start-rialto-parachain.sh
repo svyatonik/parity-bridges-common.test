@@ -1,6 +1,5 @@
 #!/bin/bash
 . ./prelude.sh
-. ./build-rialto-parachain-collator.sh
 
 # remove rialto databases
 rm -rf data/rialto-parachain-alice.db
