@@ -8,15 +8,22 @@
 		  "hide": true,
 		  "iconColor": "rgba(0, 211, 255, 1)",
 		  "name": "Annotations & Alerts",
+		  "target": {
+			"limit": 100,
+			"matchAny": false,
+			"tags": [],
+			"type": "dashboard"
+		  },
 		  "type": "dashboard"
 		}
 	  ]
 	},
 	"editable": true,
+	"fiscalYearStartMonth": 0,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 9,
 	"links": [],
+	"liveNow": false,
 	"panels": [
 	  {
 		"aliasColors": {},
@@ -24,10 +31,6 @@
 		"dashLength": 10,
 		"dashes": false,
 		"datasource": null,
-		"fieldConfig": {
-		  "defaults": {},
-		  "overrides": []
-		},
 		"fill": 1,
 		"fillGradient": 0,
 		"gridPos": {
@@ -54,7 +57,7 @@
 		  "alertThreshold": true
 		},
 		"percentage": false,
-		"pluginVersion": "7.5.3",
+		"pluginVersion": "8.2.1",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -128,10 +131,6 @@
 		"dashLength": 10,
 		"dashes": false,
 		"datasource": null,
-		"fieldConfig": {
-		  "defaults": {},
-		  "overrides": []
-		},
 		"fill": 1,
 		"fillGradient": 0,
 		"gridPos": {
@@ -158,7 +157,7 @@
 		  "alertThreshold": true
 		},
 		"percentage": false,
-		"pluginVersion": "7.5.3",
+		"pluginVersion": "8.2.1",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -232,10 +231,6 @@
 		"dashLength": 10,
 		"dashes": false,
 		"datasource": null,
-		"fieldConfig": {
-		  "defaults": {},
-		  "overrides": []
-		},
 		"fill": 1,
 		"fillGradient": 0,
 		"gridPos": {
@@ -262,7 +257,7 @@
 		  "alertThreshold": true
 		},
 		"percentage": false,
-		"pluginVersion": "7.5.3",
+		"pluginVersion": "8.2.1",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -336,10 +331,6 @@
 		"dashLength": 10,
 		"dashes": false,
 		"datasource": null,
-		"fieldConfig": {
-		  "defaults": {},
-		  "overrides": []
-		},
 		"fill": 1,
 		"fillGradient": 0,
 		"gridPos": {
@@ -366,7 +357,7 @@
 		  "alertThreshold": true
 		},
 		"percentage": false,
-		"pluginVersion": "7.5.3",
+		"pluginVersion": "8.2.1",
 		"pointradius": 2,
 		"points": false,
 		"renderer": "flot",
@@ -433,10 +424,188 @@
 		  "align": false,
 		  "alignLevel": null
 		}
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 12,
+		  "x": 0,
+		  "y": 16
+		},
+		"id": 8,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"exemplar": true,
+			"expr": "at_Rialto_relay_balance{job='millau2rialto_relay'}",
+			"interval": "",
+			"legendFormat": "Relay balance",
+			"refId": "A"
+		  },
+		  {
+			"exemplar": true,
+			"expr": "at_Rialto_messages_pallet_owner_balance{job='millau2rialto_relay'}",
+			"hide": false,
+			"interval": "",
+			"legendFormat": "Messages pallet owner balance",
+			"refId": "B"
+		  }
+		],
+		"title": "Relay accounts balances at Rialto",
+		"type": "timeseries"
+	  },
+	  {
+		"datasource": null,
+		"fieldConfig": {
+		  "defaults": {
+			"color": {
+			  "mode": "palette-classic"
+			},
+			"custom": {
+			  "axisLabel": "",
+			  "axisPlacement": "auto",
+			  "barAlignment": 0,
+			  "drawStyle": "line",
+			  "fillOpacity": 0,
+			  "gradientMode": "none",
+			  "hideFrom": {
+				"legend": false,
+				"tooltip": false,
+				"viz": false
+			  },
+			  "lineInterpolation": "linear",
+			  "lineWidth": 1,
+			  "pointSize": 5,
+			  "scaleDistribution": {
+				"type": "linear"
+			  },
+			  "showPoints": "auto",
+			  "spanNulls": false,
+			  "stacking": {
+				"group": "A",
+				"mode": "none"
+			  },
+			  "thresholdsStyle": {
+				"mode": "off"
+			  }
+			},
+			"mappings": [],
+			"thresholds": {
+			  "mode": "absolute",
+			  "steps": [
+				{
+				  "color": "green",
+				  "value": null
+				},
+				{
+				  "color": "red",
+				  "value": 80
+				}
+			  ]
+			}
+		  },
+		  "overrides": []
+		},
+		"gridPos": {
+		  "h": 8,
+		  "w": 12,
+		  "x": 12,
+		  "y": 16
+		},
+		"id": 9,
+		"options": {
+		  "legend": {
+			"calcs": [],
+			"displayMode": "list",
+			"placement": "bottom"
+		  },
+		  "tooltip": {
+			"mode": "single"
+		  }
+		},
+		"targets": [
+		  {
+			"exemplar": true,
+			"expr": "at_Millau_relay_balance{job='millau2rialto_relay'}",
+			"interval": "",
+			"legendFormat": "Relay balance",
+			"refId": "A"
+		  },
+		  {
+			"exemplar": true,
+			"expr": "at_Millau_messages_pallet_owner_balance{job='millau2rialto_relay'}",
+			"hide": false,
+			"interval": "",
+			"legendFormat": "Messages pallet owner balance",
+			"refId": "B"
+		  }
+		],
+		"title": "Relay accounts balances at Millau",
+		"type": "timeseries"
 	  }
 	],
 	"refresh": "10s",
-	"schemaVersion": 27,
+	"schemaVersion": 31,
 	"style": "dark",
 	"tags": [],
 	"templating": {
@@ -450,5 +619,5 @@
 	"timezone": "",
 	"title": "Rialto+Millau maintenance dashboard",
 	"uid": "7AuyrjlMz",
-	"version": 2
+	"version": 1
   }

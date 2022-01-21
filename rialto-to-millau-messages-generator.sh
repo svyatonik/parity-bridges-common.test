@@ -16,6 +16,10 @@ RIALTO_HOST=127.0.0.1
 RIALTO_PORT=9946
 # Rialto signer
 RIALTO_SIGNER=//Dave
+# Millau node host
+MILLAU_HOST=127.0.0.1
+# Millau node port
+MILLAU_PORT=10944
 # Millau signer
 MILLAU_SIGNER=//Alice
 # Max delay before submitting transactions (s)
@@ -45,6 +49,9 @@ submit_message_at_lane_1() {
 		--source-host=$RIALTO_HOST\
 		--source-port=$RIALTO_PORT\
 		--source-signer=$RIALTO_SIGNER\
+		--target-host=$MILLAU_HOST\
+		--target-port=$MILLAU_PORT\
+		--target-version-mode=Auto\
 		--target-signer=$MILLAU_SIGNER\
 		--lane=00000001\
 		--origin Target\
