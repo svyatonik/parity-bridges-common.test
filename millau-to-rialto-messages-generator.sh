@@ -64,8 +64,7 @@ submit_message_at_lane_1() {
 		$MESSAGE_PARAMS
 }
 
-# give conversion rate updater some time to update Rialto->Millau conversion rate in Millau
-sleep 90
+COUNTER=0
 
 BATCH_TIME=0
 while true
@@ -80,39 +79,42 @@ do
 	MESSAGE="remark --remark-payload=01234567"
 
 	# submit message
-	echo "Sending message from Millau to Rialto"
-	submit_message $MESSAGE
-	submit_message_at_lane_1 $MESSAGE
+	echo "Sending message from Millau to Rialto ($COUNTER)"
+	submit_message --conversion-rate-override metric $MESSAGE
+	submit_message_at_lane_1 --conversion-rate-override metric $MESSAGE
 
 	if [ ! -z "$GENERATE_LARGE_MESSAGES" ]; then
 
 		# submit messages with maximal size. chance ~10%
 		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
 			MESSAGES_COUNT=`shuf -i 1-6 -n 1`
-			echo "Sending $MESSAGES_COUNT maximal size messages from Millau to Rialto"
+			echo "Sending $MESSAGES_COUNT maximal size messages from Millau to Rialto ($((COUNTER + 1)))"
 			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message remark --remark-size=max
+				COUNTER=$(( COUNTER + 1 ))
+				submit_message --conversion-rate-override metric remark --remark-size=max
 			done
 		fi
 
 		# submit messages with maximal dispatch weight. chance ~10%
 		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
 			MESSAGES_COUNT=`shuf -i 1-6 -n 1`
-			echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Millau to Rialto"
+			echo "Sending $MESSAGES_COUNT maximal dispatch weight messages from Millau to Rialto ($((COUNTER + 1)))"
 			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message --dispatch-weight=max remark
+				COUNTER=$(( COUNTER + 1 ))
+				submit_message --dispatch-weight=max --conversion-rate-override metric remark
 			done
 		fi
 
 		# submit messages with both maximal size and dispatch weight. chance ~10%
 		if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
 			MESSAGES_COUNT=`shuf -i 1-3 -n 1`
-			echo "Sending $MESSAGES_COUNT maximal size + dispatch weight messages from Millau to Rialto"
+			echo "Sending $MESSAGES_COUNT maximal size + dispatch weight messages from Millau to Rialto ($((COUNTER + 1)))"
 			for i in $(seq 1 $MESSAGES_COUNT);
 			do
-				submit_message --dispatch-weight=max remark --remark-size=max
+				COUNTER=$(( COUNTER + 1 ))
+				submit_message --dispatch-weight=max --conversion-rate-override metric remark --remark-size=max
 			done
 		fi
 
@@ -121,10 +123,24 @@ do
 			if [ `shuf -i 0-100 -n 1` -lt 10 ]; then
 				BATCH_TIME=$((SECONDS + 1800))
 
-				echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Millau to Rialto"
-				for i in $(seq 1 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
+				echo "Sending $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE simple messages from Millau to Rialto ($((COUNTER + 1)))"
+				COUNTER=$(( COUNTER + 1 ))
+
+				SEND_MESSAGE_OUTPUT=$(submit_message --conversion-rate-override metric remark)
+				echo $SEND_MESSAGE_OUTPUT
+				ACTUAL_CONVERSION_RATE_REGEX="conversion rate override: ([0-9\.]+)"
+				if [[ $SEND_MESSAGE_OUTPUT =~ $ACTUAL_CONVERSION_RATE_REGEX ]]; then
+					ACTUAL_CONVERSION_RATE=${BASH_REMATCH[1]}
+				else
+					echo "Unable to find conversion rate in send-message output"
+					exit 1
+				fi
+
+				for i in $(seq 2 $MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE);
 				do
-					submit_message remark
+					COUNTER=$(( COUNTER + 1 ))
+					echo "   Sending message #$COUNTER"
+					submit_message --conversion-rate-override $ACTUAL_CONVERSION_RATE remark
 				done
 			fi
 		fi
