@@ -1,5 +1,9 @@
 #!/bin/bash
 
+mkdir bin >/dev/null 2>&1 || true
+mkdir data >/dev/null 2>&1 || true
+mkdir logs >/dev/null 2>&1 || true
+
 . ./prelude.sh
 . ./build-millau-node.sh
 . ./build-rialto-node.sh

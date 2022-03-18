@@ -17,7 +17,7 @@ DISABLE_MILLAU=
 DISABLE_RIALTO_POA=1
 DISABLE_WESTEND_TO_MILLAU=1
 DISABLE_RIALTO_PARACHAIN=1
-GENERATE_LARGE_MESSAGES=
+GENERATE_LARGE_MESSAGES=1
 USE_COMPLEX_MILLAU_RIALTO_RELAY=1
 
 # following two variables must be changed at once: either to ("", "debug") or to ("--release", "release")
